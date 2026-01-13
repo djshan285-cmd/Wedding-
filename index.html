@@ -1,124 +1,145 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mr. Kannan ♡ Mrs. Kohila — Wedding Reception</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wedding Reception | Mr. Kannan & Mrs. Kohila</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="./style.css?v=9" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- floating love hearts background -->
-  <div class="hearts" aria-hidden="true">
-    <span class="h h1">♡</span><span class="h h2">♡</span><span class="h h3">♡</span><span class="h h4">♡</span>
-    <span class="h h5">♡</span><span class="h h6">♡</span><span class="h h7">♡</span><span class="h h8">♡</span>
-    <span class="h h9">♡</span><span class="h h10">♡</span><span class="h h11">♡</span><span class="h h12">♡</span>
-  </div>
+  <!-- floating hearts + sparkles -->
+  <div class="fx-layer" aria-hidden="true">
+    <div class="sparkle"></div>
+    <div class="sparkle s2"></div>
+    <div class="sparkle s3"></div>
 
-  <!-- premium sparkles -->
-  <div class="sparkles" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span>
+    <span class="heart h1">❤</span>
+    <span class="heart h2">❤</span>
+    <span class="heart h3">❤</span>
+    <span class="heart h4">❤</span>
+    <span class="heart h5">❤</span>
+    <span class="heart h6">❤</span>
   </div>
 
   <main class="wrap">
     <section class="card">
-
-      <div class="pills">
-        <span class="pill gold">WEDDING RECEPTION</span>
-        <span class="pill soft">COLOMBO • SRI LANKA</span>
+      <div class="badges">
+        <span class="badge gold">WEDDING RECEPTION</span>
+        <span class="badge glass">Colombo • Sri Lanka</span>
       </div>
 
-      <h1 class="couple">
-        <span class="name">Mr. Kannan</span>
-        <span class="heart">♡</span>
-        <span class="name">Mrs. Kohila</span>
+      <h1 class="names">
+        <span class="name-gold">Mr. Kannan</span>
+        <span class="name-heart" aria-hidden="true">❤</span>
+        <span class="name-gold">Mrs. Kohila</span>
       </h1>
 
       <p class="subtitle">With love & joy, we invite you to celebrate with us.</p>
-      <p class="meta"><b>Date:</b> June 27, 2026 (Saturday) • <b>Venue:</b> Paradise Inn Bolgoda</p>
 
-      <!-- COUNTDOWN -->
+      <p class="meta">
+        <strong>Date:</strong> June 27, 2026 (Saturday)
+        <span class="dot">•</span>
+        <strong>Venue:</strong> Paradise Inn Bolgoda
+      </p>
+
+      <!-- countdown -->
       <div class="countdown">
-        <div class="box">
+        <div class="timebox" title="Days">
           <div id="d" class="num">00</div>
           <div class="lbl">Days</div>
         </div>
-        <div class="box">
+        <div class="timebox" title="Hours">
           <div id="h" class="num">00</div>
           <div class="lbl">Hours</div>
         </div>
-        <div class="box">
+        <div class="timebox" title="Minutes">
           <div id="m" class="num">00</div>
           <div class="lbl">Minutes</div>
         </div>
-        <div class="box">
+        <div class="timebox" title="Seconds">
           <div id="s" class="num">00</div>
           <div class="lbl">Seconds</div>
         </div>
       </div>
 
-      <div class="line"></div>
-
-      <div class="centerHead">
-        <h2 class="title">Confirm Attendance</h2>
-        <p class="hint">Please submit one response per family/reservation.</p>
+      <div class="quote">
+        “With love in our hearts and joy in our smiles, we invite you to celebrate with us.”
       </div>
 
-      <form id="rsvpForm" class="glassForm">
-        <div class="row2">
-          <input class="in" name="reservationName" placeholder="Reservation Name *" required />
-          <input class="in" name="phone" placeholder="Phone (optional)" />
+      <!-- RSVP -->
+      <h2 class="section-title">Confirm Attendance</h2>
+      <p class="section-sub">Please submit one response per family/reservation.</p>
+
+      <form id="rsvpForm" class="glassform">
+        <div class="grid2">
+          <div class="field">
+            <label>Reservation Name *</label>
+            <input name="reservationName" type="text" placeholder="Reservation Name" required />
+          </div>
+
+          <div class="field">
+            <label>Phone (optional)</label>
+            <input name="phone" type="text" placeholder="Phone (optional)" />
+          </div>
+
+          <div class="field">
+            <label>Adults count *</label>
+            <input name="adults" type="number" min="0" placeholder="Adults" required />
+          </div>
+
+          <div class="field">
+            <label>Children count</label>
+            <input name="children" type="number" min="0" value="0" placeholder="Children" />
+          </div>
+
+          <div class="field">
+            <label>Attending</label>
+            <select name="attending">
+              <option value="Yes" selected>Yes, we will attend</option>
+              <option value="No">No, we can't attend</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Short note (optional)</label>
+            <input name="shortNote" type="text" placeholder="Any note (optional)" />
+          </div>
         </div>
 
-        <div class="row2">
-          <input class="in" type="number" name="adults" placeholder="Adults count *" min="1" max="50" required />
-          <input class="in" type="number" name="children" placeholder="Children count (optional)" min="0" max="50" value="0" />
+        <div class="field">
+          <label>Message (optional)</label>
+          <textarea name="message" rows="4" placeholder="Message (optional)"></textarea>
         </div>
 
-        <div class="row2">
-          <select class="in" name="attending">
-            <option value="Yes">Yes, we will attend</option>
-            <option value="No">Sorry, cannot attend</option>
-          </select>
-          <input class="in" name="messageShort" placeholder="Any note (optional)" />
-        </div>
-
-        <textarea class="in area" name="message" placeholder="Message (optional)"></textarea>
-
-        <button id="submitBtn" class="btn" type="submit">
-          <span class="btnShine" aria-hidden="true"></span>
-          Submit RSVP
+        <button id="submitBtn" type="submit" class="btn">
+          <span class="btnText">Submit RSVP</span>
+          <span class="btnIcon" aria-hidden="true">❤</span>
         </button>
 
-        <div id="status" class="status"></div>
+        <div id="status" class="status" role="status" aria-live="polite"></div>
       </form>
 
-      <h2 class="title mt center">Location</h2>
-      <p class="hint center">Tap the map for directions.</p>
+      <!-- Location -->
+      <h2 class="section-title locationTitle">Location</h2>
+      <p class="section-sub">Tap the map for directions.</p>
 
-      <iframe class="map"
-        src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda%2C%20Sri%20Lanka&output=embed"
-        loading="lazy"></iframe>
+      <div class="mapWrap glasspanel">
+        <iframe
+          title="Paradise Inn Bolgoda Map"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda&output=embed">
+        </iframe>
+      </div>
 
-      <div class="footer">Made with ♡ for Kannan & Kohila</div>
+      <footer class="foot">
+        Made with love ❤
+      </footer>
     </section>
   </main>
 
-  <div id="thanksOverlay" class="thanksOverlay" aria-hidden="true">
-    <div class="thanksCard">
-      <div class="thanksHeart">♡</div>
-      <div class="thanksText">Thank you!</div>
-      <div class="thanksSub">Your RSVP was submitted</div>
-    </div>
-  </div>
-
-  <script src="./script.js?v=9"></script>
+  <script src="script.js"></script>
 </body>
 </html>
