@@ -4,16 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wedding Reception — Mr. Kannan ♥ Mrs. Kohila</title>
-
-  <link rel="preload" href="fonts/GistaDanes.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <!-- floating hearts + sparkles -->
-  <div class="fx">
-    <div class="hearts" aria-hidden="true"></div>
-    <div class="sparkles" aria-hidden="true"></div>
+  <div class="fx" aria-hidden="true">
+    <div class="hearts"></div>
+    <div class="sparkles"></div>
   </div>
 
   <main class="page">
@@ -36,93 +34,116 @@
         <strong>Venue:</strong> Paradise Inn Bolgoda
       </p>
 
-      <!-- Countdown -->
-      <div class="countdown" aria-label="Countdown">
-        <div class="cBox">
-          <div class="cNum" id="d">000</div>
-          <div class="cLbl">Days</div>
+      <div class="countdown">
+        <div class="cdBox">
+          <div class="cdNum" id="d">000</div>
+          <div class="cdLbl">Days</div>
         </div>
-        <div class="cBox">
-          <div class="cNum" id="h">00</div>
-          <div class="cLbl">Hours</div>
+        <div class="cdBox">
+          <div class="cdNum" id="h">00</div>
+          <div class="cdLbl">Hours</div>
         </div>
-        <div class="cBox">
-          <div class="cNum" id="m">00</div>
-          <div class="cLbl">Minutes</div>
+        <div class="cdBox">
+          <div class="cdNum" id="m">00</div>
+          <div class="cdLbl">Minutes</div>
         </div>
-        <div class="cBox">
-          <div class="cNum" id="s">00</div>
-          <div class="cLbl">Seconds</div>
+        <div class="cdBox">
+          <div class="cdNum" id="s">00</div>
+          <div class="cdLbl">Seconds</div>
         </div>
       </div>
 
-      <!-- RSVP -->
-      <div class="sectionTitle">
-        <h2>Confirm Attendance</h2>
-        <p>Please submit one response per family/reservation.</p>
-      </div>
+      <h2 class="sectionTitle center">Confirm Attendance</h2>
+      <p class="sectionSub center">Please submit one response per family/reservation.</p>
 
-      <form id="rsvpForm" class="glassForm" autocomplete="off">
+      <!-- ✅ Labels removed (only placeholders remain) -->
+      <form id="rsvpForm" class="glassForm">
         <div class="grid2">
           <div class="field">
-            <label for="reservationName">Reservation Name *</label>
-            <input id="reservationName" name="reservationName" type="text" placeholder="Reservation Name *" required />
+            <input
+              type="text"
+              id="reservationName"
+              name="reservationName"
+              placeholder="Reservation Name *"
+              required
+            />
           </div>
 
           <div class="field">
-            <label for="phone">Phone (optional)</label>
-            <input id="phone" name="phone" type="tel" placeholder="Phone (optional)" />
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="Phone (optional)"
+            />
           </div>
 
           <div class="field">
-            <label for="adults">Adults count *</label>
-            <input id="adults" name="adults" type="number" min="0" step="1" placeholder="Adults count *" required />
+            <input
+              type="number"
+              id="adults"
+              name="adults"
+              min="0"
+              step="1"
+              placeholder="Adults count *"
+              required
+            />
           </div>
 
           <div class="field">
-            <label for="children">Children count</label>
-            <input id="children" name="children" type="number" min="0" step="1" placeholder="Children count" />
+            <input
+              type="number"
+              id="children"
+              name="children"
+              min="0"
+              step="1"
+              placeholder="Children count"
+            />
           </div>
 
           <div class="field">
-            <label for="attending">Attending</label>
-            <select id="attending" name="attending">
-              <option value="Yes">Yes, we will attend</option>
-              <option value="No">No, we can't attend</option>
+            <select id="attending" name="attending" required>
+              <option value="Yes" selected>Yes, we will attend</option>
+              <option value="No">Sorry, we can’t attend</option>
             </select>
           </div>
 
           <div class="field">
-            <label for="note">Short note (optional)</label>
-            <input id="note" name="note" type="text" placeholder="Any note (optional)" />
+            <input
+              type="text"
+              id="note"
+              name="note"
+              placeholder="Any note (optional)"
+            />
           </div>
         </div>
 
-        <div class="field full">
-          <label for="message">Message (optional)</label>
-          <textarea id="message" name="message" rows="5" placeholder="Message (optional)"></textarea>
+        <div class="field">
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            placeholder="Message (optional)"
+          ></textarea>
         </div>
 
-        <button id="submitBtn" class="btn" type="submit">
-          SUBMIT RSVP <span class="btnHeart">♥</span>
+        <button id="submitBtn" type="submit" class="btn">
+          SUBMIT RSVP <span class="btnHeart" aria-hidden="true">♥</span>
         </button>
 
         <div id="status" class="status" aria-live="polite"></div>
       </form>
 
-      <!-- Location -->
-      <div class="sectionTitle mt">
-        <h2>Location</h2>
-        <p>Tap the map for directions.</p>
-      </div>
+      <h2 class="sectionTitle center">Location</h2>
+      <p class="sectionSub center">Tap the map for directions.</p>
 
-      <div class="mapWrap glassMap">
+      <div class="mapWrap">
         <iframe
-          title="Paradise Inn Bolgoda location"
+          title="Paradise Inn Bolgoda"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda&output=embed">
-        </iframe>
+          src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda&output=embed"
+        ></iframe>
       </div>
     </section>
   </main>
