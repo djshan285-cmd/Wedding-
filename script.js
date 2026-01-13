@@ -1,112 +1,39 @@
-// ============================
-// CONFIG
-// ============================
+// ====== SETTINGS ======
 
-// ✅ Your Apps Script Web App URL (/exec)
+// Your Apps Script URL (same one you used)
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
-// Wedding date (Local time). Month is 0-based: 5 = June
+// Wedding date: June is month 5 (0-based)
 const weddingDate = new Date(2026, 5, 27, 19, 0, 0);
 
-// Dropdown max
-const MAX_ADULTS = 2;
-const MAX_CHILDREN = 2;
+// Map pin (Paradise Inn Bolgoda) — you can fine-tune later if needed
+const PIN = { lat: 6.7879, lng: 79.9026 };
+const SL_CENTER = { lat: 7.8731, lng: 80.7718 }; // Sri Lanka center
 
-// ============================
-// Helpers
-// ============================
+// ====== HELPERS ======
 const $ = (id) => document.getElementById(id);
 
 function pad2(n){ return String(n).padStart(2,"0"); }
 
-function buildQS(params){
-  const usp = new URLSearchParams();
-  Object.entries(params).forEach(([k,v]) => {
-    usp.set(k, String(v ?? ""));
-  });
-  // cache-bust
-  usp.set("_ts", String(Date.now()));
-  return usp.toString();
-}
+// ====== COUNTDOWN with tick animation ======
+const ids = {
+  d: $("cdDays"),
+  h: $("cdHours"),
+  m: $("cdMins"),
+  s: $("cdSecs"),
+};
 
-// Submit via hidden iframe (avoids CORS/XHR problems)
-// Works with Apps Script doGet or doPost (we do GET navigation)
-function submitViaIframe(url, params){
-  return new Promise((resolve, reject) => {
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.name = "rsvp_iframe_" + Date.now();
+const last = { d:null, h:null, m:null, s:null };
 
-    let done = false;
-
-    const cleanup = () => {
-      setTimeout(() => iframe.remove(), 500);
-    };
-
-    iframe.onload = () => {
-      if (done) return;
-      done = true;
-      cleanup();
-      resolve(true);
-    };
-
-    iframe.onerror = () => {
-      if (done) return;
-      done = true;
-      cleanup();
-      reject(new Error("iframe submit failed"));
-    };
-
-    document.body.appendChild(iframe);
-
-    const src = url + "?" + buildQS(params);
-    iframe.src = src;
-
-    // safety timeout (if Apps Script is slow)
-    setTimeout(() => {
-      if (done) return;
-      done = true;
-      cleanup();
-      // still treat as success (Apps Script often returns slowly but saves)
-      resolve(true);
-    }, 6000);
-  });
-}
-
-// Joyful hearts burst
-function heartsBurst(){
-  const layer = $("successFX");
-  if (!layer) return;
-  layer.innerHTML = "";
-
-  const rect = layer.getBoundingClientRect();
-  const hearts = 14;
-
-  for(let i=0;i<hearts;i++){
-    const h = document.createElement("div");
-    h.className = "popHeart";
-    h.textContent = (i % 3 === 0) ? "💖" : "💗";
-    const x = Math.random() * rect.width;
-    const y = rect.height - 30 + Math.random() * 20;
-    h.style.left = x + "px";
-    h.style.top = y + "px";
-    h.style.animationDelay = (Math.random() * 0.18) + "s";
-    h.style.fontSize = (18 + Math.random() * 14) + "px";
-    layer.appendChild(h);
-  }
-}
-
-// Countdown update + tick animation
-function setTick(el, value){
-  if (!el) return;
-  if (el.textContent !== value){
+function setTick(el, value, key){
+  if (last[key] !== value){
     el.textContent = value;
     el.classList.remove("tick");
-    // trigger reflow
+    // force reflow
     void el.offsetWidth;
     el.classList.add("tick");
-    setTimeout(() => el.classList.remove("tick"), 180);
+    last[key] = value;
   }
 }
 
@@ -121,162 +48,152 @@ function updateCountdown(){
   const mins = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
 
-  setTick($("cdDays"), String(days));
-  setTick($("cdHours"), pad2(hours));
-  setTick($("cdMins"), pad2(mins));
-  setTick($("cdSecs"), pad2(secs));
+  setTick(ids.d, days, "d");
+  setTick(ids.h, pad2(hours), "h");
+  setTick(ids.m, pad2(mins), "m");
+  setTick(ids.s, pad2(secs), "s");
 }
 
-// ============================
-// Music autoplay logic
-// ============================
-// Browsers often BLOCK autoplay with sound.
-// We try to autoplay muted first, then user can tap Music once to enable sound.
-async function initMusic(){
-  const audio = $("bgMusic");
-  const btn = $("musicBtn");
-  const label = $("musicLabel");
+setInterval(updateCountdown, 1000);
+updateCountdown();
 
-  if (!audio || !btn || !label) return;
+// ====== BACKGROUND HEARTS (more visible + more frequent) ======
+const heartsHost = document.querySelector(".bgHearts");
 
-  audio.volume = 0.18;       // mild sound
-  audio.muted = true;        // allow autoplay attempt
-  audio.loop = true;
+function spawnHeart(){
+  const h = document.createElement("div");
+  h.className = "heart";
+  const icons = ["♥","♡","💕","💗","💖"];
+  h.textContent = icons[Math.floor(Math.random() * icons.length)];
 
-  const setUI = (on) => {
-    btn.classList.toggle("on", on);
-    label.textContent = on ? "Music On" : "Music";
-  };
+  const left = Math.random() * 100;             // vw
+  const size = 14 + Math.random() * 18;         // px
+  const duration = 8 + Math.random() * 9;       // sec
 
-  // attempt autoplay (muted)
-  try{
-    await audio.play();
-    setUI(true);
-  }catch{
-    // autoplay blocked even muted (some browsers)
-    setUI(false);
-  }
+  h.style.left = left + "vw";
+  h.style.bottom = (-10) + "vh";
+  h.style.fontSize = size + "px";
+  h.style.animationDuration = duration + "s";
 
-  // button toggles
-  btn.addEventListener("click", async () => {
-    try{
-      if (audio.paused){
-        audio.muted = false;
-        await audio.play();
-        setUI(true);
-      }else{
-        audio.pause();
-        setUI(false);
-      }
-    }catch{
-      // If blocked, try muted play then ask user to click again
-      audio.muted = true;
-      try{ await audio.play(); setUI(true); }catch{}
-    }
-  });
+  // slightly random tint
+  const tints = ["#ff6b90","#ff8fb1","#f7b5c8","#ffd1dc","#f2a7b8"];
+  h.style.color = tints[Math.floor(Math.random() * tints.length)];
 
-  // First user interaction anywhere -> unmute once (optional)
-  const unlock = async () => {
-    if (!audio.paused){
-      audio.muted = false;
-      // keep mild volume
-      audio.volume = 0.18;
-    }
-    window.removeEventListener("pointerdown", unlock);
-  };
-  window.addEventListener("pointerdown", unlock, { once: true });
+  heartsHost.appendChild(h);
+  setTimeout(() => h.remove(), duration * 1000);
 }
 
-// ============================
-// Dropdowns
-// ============================
-function fillSelect(selectEl, max){
-  for(let i=0;i<=max;i++){
-    const opt = document.createElement("option");
-    opt.value = String(i);
-    opt.textContent = String(i);
-    selectEl.appendChild(opt);
+// start with some hearts already visible
+for(let i=0;i<18;i++){
+  setTimeout(spawnHeart, i * 220);
+}
+// continuous
+setInterval(spawnHeart, 520);
+
+// ====== RSVP submit + love burst animation ======
+const form = $("rsvpForm");
+const statusEl = $("status");
+const toast = $("loveToast");
+const submitBtn = $("submitBtn");
+
+function burstHearts(){
+  // burst from bottom center of RSVP card
+  const parent = form;
+  const rect = parent.getBoundingClientRect();
+
+  for(let i=0;i<14;i++){
+    const b = document.createElement("div");
+    b.className = "burstHeart";
+    b.textContent = ["♥","💗","💕","💖"][Math.floor(Math.random()*4)];
+
+    // random burst direction
+    const dx = (Math.random() * 260 - 130) + "px";
+    const dy = (-40 - Math.random() * 140) + "px";
+    b.style.setProperty("--dx", dx);
+    b.style.setProperty("--dy", dy);
+
+    // position near bottom-center of the form
+    b.style.top = (rect.height - 52) + "px";
+
+    parent.appendChild(b);
+    setTimeout(()=> b.remove(), 1500);
   }
 }
 
-// ============================
-// Form submit
-// ============================
-function setStatus(msg, isError=false){
-  const el = $("status");
-  if (!el) return;
-  el.textContent = msg;
-  el.classList.toggle("err", isError);
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  statusEl.textContent = "";
+  toast.textContent = "";
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = "0.85";
+
+  const fd = new FormData(form);
+  const payload = new URLSearchParams(fd);
+
+  try {
+    // IMPORTANT: Apps Script often needs no-cors from static sites
+    await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+      body: payload.toString(),
+    });
+
+    // With no-cors we can't read response; assume ok
+    statusEl.textContent = "";
+    toast.textContent = "Submitted! Thank you. ❤️";
+    toast.style.color = "#2b7a4b";
+
+    burstHearts();
+    form.reset();
+
+  } catch (err) {
+    statusEl.textContent = "Sorry — submit failed. Please try again.";
+    toast.textContent = "";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
+  }
+});
+
+// ====== CLEAN MAP (Sri Lanka view + pinned venue) ======
+function initMap(){
+  const map = L.map("map", {
+    zoomControl: true,
+    attributionControl: false
+  }).setView([SL_CENTER.lat, SL_CENTER.lng], 7); // whole Sri Lanka view
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18
+  }).addTo(map);
+
+  const marker = L.marker([PIN.lat, PIN.lng]).addTo(map);
+  marker.bindPopup("<b>Paradise Inn Bolgoda</b><br/>Pinned venue").openPopup();
+}
+initMap();
+
+// ====== MUSIC AUTOPLAY (will be blocked until first user interaction sometimes) ======
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+async function tryPlay(){
+  if (!music) return;
+  music.volume = 0.25; // mild sound
+  try { await music.play(); } catch(e) {}
 }
 
-function clearForm(){
-  $("rsvpForm").reset();
-  // restore placeholders selected state
-  $("adults").selectedIndex = 0;
-  $("children").selectedIndex = 0;
-}
+// try autoplay
+tryPlay();
 
-function initForm(){
-  const form = $("rsvpForm");
-  if (!form) return;
+// first user gesture will allow it
+window.addEventListener("pointerdown", tryPlay, { once: true });
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    setStatus("Submitting…", false);
-
-    const payload = {
-      reservationName: $("reservationName").value.trim(),
-      phone: $("phone").value.trim(),
-      adults: $("adults").value,
-      children: $("children").value || "0",
-      attending: $("attending").value,
-      note: $("note").value.trim(),
-      message: $("message").value.trim(),
-    };
-
-    if (!payload.reservationName){
-      setStatus("Please enter Reservation Name.", true);
-      return;
-    }
-    if (!payload.adults){
-      setStatus("Please select Adults count.", true);
-      return;
-    }
-
-    // IMPORTANT:
-    // Apps Script WebApp must be:
-    // Deploy -> "Web app" -> Who has access: "Anyone" (or Anyone with link)
-    try{
-      await submitViaIframe(APPS_SCRIPT_URL, payload);
-
-      setStatus("Submitted! Thank you. 💖", false);
-      heartsBurst();
-      clearForm();
-
-      // small extra joy
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }catch(err){
-      setStatus("Sorry — submit failed. Please try again.", true);
-      console.error(err);
-    }
-  });
-}
-
-// ============================
-// Init
-// ============================
-document.addEventListener("DOMContentLoaded", () => {
-  // countdown
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-
-  // dropdowns
-  fillSelect($("adults"), MAX_ADULTS);
-  fillSelect($("children"), MAX_CHILDREN);
-
-  // music
-  initMusic();
-
-  // form
-  initForm();
+musicBtn.addEventListener("click", async () => {
+  if (music.paused){
+    await tryPlay();
+    musicBtn.textContent = "❚❚ Pause";
+  } else {
+    music.pause();
+    musicBtn.textContent = "♪ Music";
+  }
 });
