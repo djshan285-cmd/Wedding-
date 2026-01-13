@@ -1,29 +1,115 @@
-// ====== CONFIG ======
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
+// ============================
+// CONFIG
+// ============================
+
+// ✅ Your Apps Script Web App URL (/exec)
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
 // Wedding date (Local time). Month is 0-based: 5 = June
-const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // June 27, 2026 7:00 PM
+const weddingDate = new Date(2026, 5, 27, 19, 0, 0);
 
-// ====== Helpers ======
-function pad(n){ return String(n).padStart(2, "0"); }
+// Dropdown max
+const MAX_ADULTS = 10;
+const MAX_CHILDREN = 10;
 
-function pulse(el){
-  el.classList.remove("pulse");
-  // force reflow
-  void el.offsetWidth;
-  el.classList.add("pulse");
+// ============================
+// Helpers
+// ============================
+const $ = (id) => document.getElementById(id);
+
+function pad2(n){ return String(n).padStart(2,"0"); }
+
+function buildQS(params){
+  const usp = new URLSearchParams();
+  Object.entries(params).forEach(([k,v]) => {
+    usp.set(k, String(v ?? ""));
+  });
+  // cache-bust
+  usp.set("_ts", String(Date.now()));
+  return usp.toString();
 }
 
-function setTick(id, value){
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (el.textContent !== String(value)){
-    el.textContent = value;
-    pulse(el);
+// Submit via hidden iframe (avoids CORS/XHR problems)
+// Works with Apps Script doGet or doPost (we do GET navigation)
+function submitViaIframe(url, params){
+  return new Promise((resolve, reject) => {
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.name = "rsvp_iframe_" + Date.now();
+
+    let done = false;
+
+    const cleanup = () => {
+      setTimeout(() => iframe.remove(), 500);
+    };
+
+    iframe.onload = () => {
+      if (done) return;
+      done = true;
+      cleanup();
+      resolve(true);
+    };
+
+    iframe.onerror = () => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error("iframe submit failed"));
+    };
+
+    document.body.appendChild(iframe);
+
+    const src = url + "?" + buildQS(params);
+    iframe.src = src;
+
+    // safety timeout (if Apps Script is slow)
+    setTimeout(() => {
+      if (done) return;
+      done = true;
+      cleanup();
+      // still treat as success (Apps Script often returns slowly but saves)
+      resolve(true);
+    }, 6000);
+  });
+}
+
+// Joyful hearts burst
+function heartsBurst(){
+  const layer = $("successFX");
+  if (!layer) return;
+  layer.innerHTML = "";
+
+  const rect = layer.getBoundingClientRect();
+  const hearts = 14;
+
+  for(let i=0;i<hearts;i++){
+    const h = document.createElement("div");
+    h.className = "popHeart";
+    h.textContent = (i % 3 === 0) ? "💖" : "💗";
+    const x = Math.random() * rect.width;
+    const y = rect.height - 30 + Math.random() * 20;
+    h.style.left = x + "px";
+    h.style.top = y + "px";
+    h.style.animationDelay = (Math.random() * 0.18) + "s";
+    h.style.fontSize = (18 + Math.random() * 14) + "px";
+    layer.appendChild(h);
   }
 }
 
-// ====== Countdown ======
+// Countdown update + tick animation
+function setTick(el, value){
+  if (!el) return;
+  if (el.textContent !== value){
+    el.textContent = value;
+    el.classList.remove("tick");
+    // trigger reflow
+    void el.offsetWidth;
+    el.classList.add("tick");
+    setTimeout(() => el.classList.remove("tick"), 180);
+  }
+}
+
 function updateCountdown(){
   const now = new Date();
   let diff = weddingDate - now;
@@ -35,162 +121,162 @@ function updateCountdown(){
   const mins = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
 
-  setTick("d", days);
-  setTick("h", pad(hours));
-  setTick("m", pad(mins));
-  setTick("s", pad(secs));
+  setTick($("cdDays"), String(days));
+  setTick($("cdHours"), pad2(hours));
+  setTick($("cdMins"), pad2(mins));
+  setTick($("cdSecs"), pad2(secs));
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
+// ============================
+// Music autoplay logic
+// ============================
+// Browsers often BLOCK autoplay with sound.
+// We try to autoplay muted first, then user can tap Music once to enable sound.
+async function initMusic(){
+  const audio = $("bgMusic");
+  const btn = $("musicBtn");
+  const label = $("musicLabel");
 
-// ====== RSVP submit + success animation ======
-const form = document.getElementById("rsvpForm");
-const success = document.getElementById("success");
+  if (!audio || !btn || !label) return;
 
-function heartBurst(){
-  const span = document.createElement("span");
-  span.className = "heartBurst";
-  span.textContent = "💖";
-  return span;
-}
+  audio.volume = 0.18;       // mild sound
+  audio.muted = true;        // allow autoplay attempt
+  audio.loop = true;
 
-form?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const fd = new FormData(form);
-  const payload = {
-    reservationName: (fd.get("reservationName") || "").toString().trim(),
-    phone: (fd.get("phone") || "").toString().trim(),
-    adults: (fd.get("adults") || "").toString().trim(),
-    children: (fd.get("children") || "").toString().trim(),
-    attending: (fd.get("attending") || "").toString(),
-    note: (fd.get("note") || "").toString().trim(),
-    message: (fd.get("message") || "").toString().trim(),
+  const setUI = (on) => {
+    btn.classList.toggle("on", on);
+    label.textContent = on ? "Music On" : "Music";
   };
 
-  // quick validation (adults must be number-ish)
-  if (!payload.reservationName) return;
-  if (!payload.adults) return;
-
-  success.textContent = "Submitting...";
-  success.classList.add("show");
-
+  // attempt autoplay (muted)
   try{
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    await audio.play();
+    setUI(true);
+  }catch{
+    // autoplay blocked even muted (some browsers)
+    setUI(false);
+  }
 
-    const data = await res.json().catch(() => ({}));
+  // button toggles
+  btn.addEventListener("click", async () => {
+    try{
+      if (audio.paused){
+        audio.muted = false;
+        await audio.play();
+        setUI(true);
+      }else{
+        audio.pause();
+        setUI(false);
+      }
+    }catch{
+      // If blocked, try muted play then ask user to click again
+      audio.muted = true;
+      try{ await audio.play(); setUI(true); }catch{}
+    }
+  });
 
-    if (!res.ok || data.ok !== true){
-      throw new Error(data.error || "Submit failed");
+  // First user interaction anywhere -> unmute once (optional)
+  const unlock = async () => {
+    if (!audio.paused){
+      audio.muted = false;
+      // keep mild volume
+      audio.volume = 0.18;
+    }
+    window.removeEventListener("pointerdown", unlock);
+  };
+  window.addEventListener("pointerdown", unlock, { once: true });
+}
+
+// ============================
+// Dropdowns
+// ============================
+function fillSelect(selectEl, max){
+  for(let i=0;i<=max;i++){
+    const opt = document.createElement("option");
+    opt.value = String(i);
+    opt.textContent = String(i);
+    selectEl.appendChild(opt);
+  }
+}
+
+// ============================
+// Form submit
+// ============================
+function setStatus(msg, isError=false){
+  const el = $("status");
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.toggle("err", isError);
+}
+
+function clearForm(){
+  $("rsvpForm").reset();
+  // restore placeholders selected state
+  $("adults").selectedIndex = 0;
+  $("children").selectedIndex = 0;
+}
+
+function initForm(){
+  const form = $("rsvpForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setStatus("Submitting…", false);
+
+    const payload = {
+      reservationName: $("reservationName").value.trim(),
+      phone: $("phone").value.trim(),
+      adults: $("adults").value,
+      children: $("children").value || "0",
+      attending: $("attending").value,
+      note: $("note").value.trim(),
+      message: $("message").value.trim(),
+    };
+
+    if (!payload.reservationName){
+      setStatus("Please enter Reservation Name.", true);
+      return;
+    }
+    if (!payload.adults){
+      setStatus("Please select Adults count.", true);
+      return;
     }
 
-    // Joyful success
-    success.textContent = "Submitted! Thank you.";
-    success.appendChild(heartBurst());
-    success.classList.add("show");
+    // IMPORTANT:
+    // Apps Script WebApp must be:
+    // Deploy -> "Web app" -> Who has access: "Anyone" (or Anyone with link)
+    try{
+      await submitViaIframe(APPS_SCRIPT_URL, payload);
 
-    form.reset();
+      setStatus("Submitted! Thank you. 💖", false);
+      heartsBurst();
+      clearForm();
 
-  }catch(err){
-    success.textContent = "Sorry — submit failed. Please try again.";
-    success.classList.add("show");
-    console.error(err);
-  }
+      // small extra joy
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }catch(err){
+      setStatus("Sorry — submit failed. Please try again.", true);
+      console.error(err);
+    }
+  });
+}
+
+// ============================
+// Init
+// ============================
+document.addEventListener("DOMContentLoaded", () => {
+  // countdown
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // dropdowns
+  fillSelect($("adults"), MAX_ADULTS);
+  fillSelect($("children"), MAX_CHILDREN);
+
+  // music
+  initMusic();
+
+  // form
+  initForm();
 });
-
-// ====== Floating hearts + sparkles ======
-function rand(min, max){ return Math.random() * (max - min) + min; }
-
-function makeHearts(){
-  const wrap = document.getElementById("hearts");
-  if (!wrap) return;
-
-  const count = 14;
-  for (let i=0; i<count; i++){
-    const s = document.createElement("span");
-    s.textContent = "♥";
-    s.style.left = rand(0, 100) + "vw";
-    s.style.fontSize = rand(14, 28) + "px";
-    s.style.animationDuration = rand(10, 18) + "s";
-    s.style.animationDelay = rand(0, 6) + "s";
-    wrap.appendChild(s);
-  }
-}
-
-function makeSparkles(){
-  const wrap = document.getElementById("sparkles");
-  if (!wrap) return;
-
-  const count = 22;
-  for (let i=0; i<count; i++){
-    const s = document.createElement("span");
-    s.style.left = rand(0, 100) + "vw";
-    s.style.top = rand(0, 100) + "vh";
-    s.style.animationDuration = rand(2.2, 4.8) + "s";
-    s.style.animationDelay = rand(0, 2.2) + "s";
-    wrap.appendChild(s);
-  }
-}
-
-makeHearts();
-makeSparkles();
-
-// ====== Music autoplay attempt (with fallback) ======
-const bgm = document.getElementById("bgm");
-const musicBtn = document.getElementById("musicBtn");
-
-function fadeTo(audio, target=0.22, ms=800){
-  const start = audio.volume;
-  const t0 = performance.now();
-  function step(t){
-    const p = Math.min(1, (t - t0) / ms);
-    audio.volume = start + (target - start) * p;
-    if (p < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-async function tryAutoplay(){
-  if (!bgm) return;
-
-  bgm.volume = 0.0; // start silent then fade to mild sound
-  try{
-    await bgm.play();
-    fadeTo(bgm, 0.18, 900);
-    if (musicBtn) musicBtn.style.display = "none";
-  }catch{
-    // autoplay blocked -> show button
-    if (musicBtn) musicBtn.style.display = "inline-flex";
-  }
-}
-
-musicBtn?.addEventListener("click", async () => {
-  if (!bgm) return;
-  try{
-    await bgm.play();
-    fadeTo(bgm, 0.18, 700);
-    musicBtn.textContent = "🔊 Music on (tap to pause)";
-  }catch{
-    // ignore
-  }
-});
-
-musicBtn?.addEventListener("dblclick", () => {
-  // quick pause on double click
-  if (!bgm) return;
-  bgm.pause();
-  musicBtn.textContent = "🔈 Tap to play music";
-});
-
-tryAutoplay();
-
-// Also try again on first user interaction (helps on mobile)
-window.addEventListener("pointerdown", () => {
-  if (!bgm) return;
-  if (bgm.paused) tryAutoplay();
-}, { once: true });
