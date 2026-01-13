@@ -1,10 +1,10 @@
 :root{
-  --gold1:#f6d365;
-  --gold2:#fda085;
-  --purple1:#7b2cbf;
-  --purple2:#3c096c;
-  --rose:#c2185b;
-  --soft:#fff7fb;
+  --goldA:#fff1b8;
+  --goldB:#f6d365;
+  --goldC:#ffb703;
+  --purpleA:#7b2cbf;
+  --purpleB:#3c096c;
+  --rose:#ff4d6d;
   --text:#2b2b2b;
 }
 
@@ -16,19 +16,18 @@ body{
   min-height:100vh;
   color:var(--text);
 
-  /* Romantic background + optional bg.jpg */
   background-image:
     radial-gradient(circle at 15% 10%, rgba(123,44,191,0.18), transparent 45%),
-    radial-gradient(circle at 90% 25%, rgba(194,24,91,0.18), transparent 45%),
-    radial-gradient(circle at 60% 90%, rgba(246,211,101,0.16), transparent 55%),
-    linear-gradient(rgba(255,247,251,0.80), rgba(255,247,251,0.92)),
+    radial-gradient(circle at 90% 25%, rgba(255,77,109,0.16), transparent 45%),
+    radial-gradient(circle at 60% 90%, rgba(246,211,101,0.14), transparent 55%),
+    linear-gradient(rgba(255,247,251,0.82), rgba(255,247,251,0.93)),
     url("bg.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* Floating hearts background */
+/* Floating hearts */
 .hearts{
   position:fixed;
   inset:0;
@@ -40,8 +39,8 @@ body{
   position:absolute;
   bottom:-40px;
   font-size:18px;
-  opacity:0.22;
-  filter: drop-shadow(0 10px 20px rgba(194,24,91,0.25));
+  opacity:0.20;
+  filter: drop-shadow(0 10px 20px rgba(255,77,109,0.20));
   animation: floatUp linear infinite;
 }
 .hearts span:nth-child(1){ left:8%;  animation-duration:12s; font-size:18px; }
@@ -57,7 +56,7 @@ body{
 
 @keyframes floatUp{
   0%{ transform: translateY(0) rotate(-6deg); opacity:0; }
-  10%{ opacity:0.22; }
+  12%{ opacity:0.20; }
   100%{ transform: translateY(-115vh) rotate(10deg); opacity:0; }
 }
 
@@ -71,18 +70,20 @@ body{
   border-radius:22px;
 
   background: rgba(255,255,255,0.78);
-  border: 1px solid rgba(255,255,255,0.38);
+  border: 1px solid rgba(255,255,255,0.40);
   box-shadow: 0 18px 70px rgba(0,0,0,0.18);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* Top tags */
 .topTag{
   display:flex;
   justify-content:center;
   gap:10px;
   flex-wrap:wrap;
   margin-top:6px;
+  margin-bottom:10px; /* ✅ gives space before name */
 }
 .tag{
   font-family:Cinzel, serif;
@@ -92,7 +93,7 @@ body{
   padding:8px 12px;
   border-radius:999px;
   color:#3a1a5c;
-  background: linear-gradient(90deg, rgba(246,211,101,0.55), rgba(194,24,91,0.18));
+  background: linear-gradient(90deg, rgba(246,211,101,0.55), rgba(255,77,109,0.16));
   border: 1px solid rgba(123,44,191,0.18);
 }
 .tag2{
@@ -101,38 +102,72 @@ body{
   border-radius:999px;
   color:#4a2a6a;
   background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(194,24,91,0.15);
+  border: 1px solid rgba(255,77,109,0.14);
 }
 
-/* Couple name: smaller, lighter, vibrant gold, different font */
+/* ✅ FIX: Names smaller + wrap + no overlap */
 .names{
   text-align:center;
-  margin: 10px 0 0;
-  line-height:1.05;
+  margin: 8px auto 0;
+  line-height:1.15;
+  padding-top: 4px;
+  max-width: 900px;
+  word-break: keep-all;
 }
-.name1, .name2{
-  font-family:"Cinzel", serif;   /* different font */
-  font-weight:600;              /* lighter */
-  font-size:52px;               /* smaller */
-  letter-spacing:0.02em;
-  display:inline-block;
 
-  /* vibrant gold gradient */
-  background: linear-gradient(90deg, #fff3b0, #f6d365, #ffb703, #f6d365);
+/* Each name on its own line on small screens automatically */
+.name1, .name2{
+  display:inline-block;
+  font-family:"Cinzel", serif;
+  font-weight:600;
+  font-size:42px;               /* ✅ smaller default */
+  letter-spacing:0.02em;
+  padding: 0 6px;
+
+  /* gold vibrant */
+  background: linear-gradient(90deg, var(--goldA), var(--goldB), var(--goldC), var(--goldB));
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
 
-  filter: drop-shadow(0 8px 18px rgba(246,211,101,0.22));
+  filter: drop-shadow(0 10px 22px rgba(246,211,101,0.18));
 }
+
+/* Make 2nd name purple (different color) */
+.name2{
+  background: linear-gradient(90deg, rgba(123,44,191,0.95), rgba(255,77,109,0.75), rgba(123,44,191,0.95));
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter: drop-shadow(0 10px 22px rgba(123,44,191,0.16));
+}
+
 .amp{
+  display:inline-block;
   font-family:"Great Vibes", cursive;
   font-size:22px;
-  color:#ff4d6d;  /* light red */
-  display:inline-block;
+  color: var(--rose);
   margin: 0 10px;
-  transform: translateY(-6px);
-  opacity:0.9;
+  transform: translateY(-3px);
+  opacity:0.95;
+}
+
+/* ✅ Responsive: prevent overlap on smaller screens */
+@media (max-width: 900px){
+  .name1, .name2{ font-size:38px; }
+}
+@media (max-width: 720px){
+  .names{ margin-top: 6px; }
+  .name1, .name2{
+    font-size:32px;
+    display:block;      /* ✅ forces line breaks (no overlap) */
+    padding: 2px 0;
+  }
+  .amp{
+    display:block;
+    margin: 2px 0 4px;
+    transform:none;
+  }
 }
 
 /* Glow line */
@@ -141,7 +176,7 @@ body{
   width:min(520px, 92%);
   margin: 12px auto 12px;
   border-radius:999px;
-  background: linear-gradient(90deg, transparent, rgba(246,211,101,0.9), rgba(255,77,109,0.55), rgba(123,44,191,0.65), transparent);
+  background: linear-gradient(90deg, transparent, rgba(246,211,101,0.95), rgba(255,77,109,0.55), rgba(123,44,191,0.65), transparent);
 }
 
 /* Details */
@@ -191,28 +226,46 @@ body{
   font-size:34px;
   font-weight:800;
 
-  background: linear-gradient(90deg, #fff3b0, #f6d365, #ffb703, #f6d365);
+  background: linear-gradient(90deg, var(--goldA), var(--goldB), var(--goldC), var(--goldB));
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
 }
-.timebox small{
-  color:#5c5c5c;
-}
+.timebox small{ color:#5c5c5c; }
 
-/* Form glass look (more transparent) */
+/* ✅ REALISTIC GLASS FORM */
 .form{
-  background: rgba(255,255,255,0.18);
-  padding: 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.28);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 14px 50px rgba(0,0,0,0.10);
+  position:relative;
   display:grid;
   gap:10px;
   margin-top:10px;
+  padding: 16px;
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.28);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+
+  box-shadow:
+    0 24px 70px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -14px 30px rgba(0,0,0,0.05);
 }
+
+/* Glass shine */
+.form::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:20px;
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.35),
+    rgba(255,255,255,0.05) 45%,
+    rgba(255,255,255,0.12));
+  pointer-events:none;
+}
+.form *{ position:relative; z-index:1; }
 
 .row2{
   display:grid;
@@ -221,34 +274,41 @@ body{
 }
 @media (max-width:720px){
   .row2{ grid-template-columns: 1fr; }
-  .name1, .name2{ font-size:44px; }
 }
 
-/* Inputs also transparent */
+/* Inputs - glass */
 input,select,textarea{
   padding:12px;
   border-radius:14px;
-  border:1px solid rgba(255,255,255,0.35);
+  border:1px solid rgba(255,255,255,0.30);
   font-size:14px;
   color:#2b2b2b;
-  background: rgba(255,255,255,0.22);
+
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    0 10px 26px rgba(0,0,0,0.06);
   outline:none;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 input::placeholder, textarea::placeholder{
   color: rgba(40,40,40,0.65);
 }
 input:focus,select:focus,textarea:focus{
-  border-color: rgba(246,211,101,0.55);
-  box-shadow: 0 0 0 4px rgba(246,211,101,0.16);
+  border-color: rgba(246,211,101,0.65);
+  box-shadow:
+    0 0 0 4px rgba(246,211,101,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    0 10px 26px rgba(0,0,0,0.06);
 }
 textarea{
   min-height: 95px;
   resize: vertical;
 }
 
-/* Button romantic glow */
+/* Button */
 button{
   position:relative;
   overflow:hidden;
@@ -260,7 +320,7 @@ button{
   letter-spacing:0.02em;
   cursor:pointer;
 
-  background: linear-gradient(90deg, var(--purple2), #ff4d6d, #ffb703);
+  background: linear-gradient(90deg, var(--purpleB), var(--rose), var(--goldC));
   box-shadow: 0 16px 40px rgba(123,44,191,0.18);
 }
 .btnGlow{
@@ -277,11 +337,7 @@ button{
 }
 button:disabled{ opacity:0.7; cursor:not-allowed; }
 
-.status{
-  font-size: 13px;
-  color: #3f2a52;
-  min-height: 18px;
-}
+.status{ font-size:13px; color:#3f2a52; min-height:18px; }
 
 /* Map */
 .mt{ margin-top:18px; }
@@ -336,7 +392,7 @@ button:disabled{ opacity:0.7; cursor:not-allowed; }
 .thanksHeart{
   font-size: 70px;
   line-height: 1;
-  background: linear-gradient(90deg, #fff3b0, #ff4d6d, #7b2cbf, #ffb703);
+  background: linear-gradient(90deg, var(--goldA), var(--rose), var(--purpleA), var(--goldC));
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
