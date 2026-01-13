@@ -4,15 +4,23 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kannan ❤️ Kohila | Wedding Reception</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <main class="card">
+    <div class="subtitle">Wedding Reception</div>
+
     <h1 class="names">Mr. Kannan <span class="and">&</span> Mrs. Kohila</h1>
-    <p class="details"><b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall</p>
+
+    <p class="details">
+      <b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall, Colombo
+    </p>
 
     <div class="countdown">
       <div class="timebox"><div id="d">00</div><small>Days</small></div>
@@ -22,24 +30,41 @@
     </div>
 
     <h2>Location</h2>
+    <p class="muted">Tap the map for directions.</p>
+
     <iframe class="map"
-      src="https://www.google.com/maps?q=xxxxx+wedding+hall&output=embed"
+      src="https://www.google.com/maps?q=Colombo%2C%20Sri%20Lanka&output=embed"
       loading="lazy"></iframe>
 
     <h2>Confirm Attendance</h2>
+    <p class="muted">Please submit one response per family/reservation.</p>
+
     <form id="rsvpForm" class="form">
-      <input name="reservationName" placeholder="Reservation Name" required />
+      <input name="reservationName" placeholder="Reservation Name *" required />
       <input name="phone" placeholder="Phone (optional)" />
-      <input type="number" name="familyCount" placeholder="Family attending count" min="1" required />
+
+      <input type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
+
       <select name="attending">
         <option value="Yes">Yes, we will attend</option>
-        <option value="No">No, cannot attend</option>
+        <option value="No">Sorry, cannot attend</option>
       </select>
+
       <textarea name="message" placeholder="Message (optional)"></textarea>
+
       <button id="submitBtn" type="submit">Submit RSVP</button>
-      <div id="status"></div>
+      <div id="status" class="status"></div>
     </form>
   </main>
+
+  <!-- Thank-you popup -->
+  <div id="thanksOverlay" class="thanksOverlay" aria-hidden="true">
+    <div class="thanksCard">
+      <div class="thanksHeart">❤</div>
+      <div class="thanksText">Thank you!</div>
+      <div class="thanksSub">Your RSVP was submitted</div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
