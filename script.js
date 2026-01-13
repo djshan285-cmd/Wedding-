@@ -24,7 +24,7 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 
 /* ✅ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMBTAWEkD9W_aPW8cwygbDWj-DAQMZ20zcqt-OQe3-/dev";
 
 const form = document.getElementById("rsvpForm");
 const statusEl = document.getElementById("status");
