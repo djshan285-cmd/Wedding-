@@ -2,26 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wedding Reception — Mr. Lannan ♥ Mrs. Kohila</title>
-
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wedding Reception — Mr. Kannan ♥ Mrs. Kohila</title>
+  <link rel="stylesheet" href="style.css?v=1" />
 </head>
 
 <body>
-  <!-- Background music -->
-  <audio id="bgMusic" src="music/Song.mp3" preload="auto" loop playsinline></audio>
-
-  <!-- Small music button (user can tap if autoplay is blocked) -->
-  <button id="musicBtn" class="musicBtn" aria-label="Toggle music" title="Music">
-    ♪
-  </button>
-
-  <!-- Soft floating hearts + sparkles -->
+  <!-- floating hearts + sparkles -->
   <div class="fx" aria-hidden="true">
-    <div class="hearts"></div>
-    <div class="sparkles"></div>
+    <div class="hearts" id="hearts"></div>
+    <div class="sparkles" id="sparkles"></div>
   </div>
+
+  <!-- background music (autoplay attempt) -->
+  <audio id="bgm" src="music/Song.mp3" preload="auto" loop playsinline></audio>
+
+  <!-- Music control (shows if autoplay blocked) -->
+  <button id="musicBtn" class="musicBtn" type="button" aria-label="Toggle music">
+    🔈 Tap to play music
+  </button>
 
   <main class="page">
     <section class="card hero">
@@ -31,7 +30,7 @@
       </div>
 
       <h1 class="names">
-        <span class="nameGold">Mr. Lannan</span>
+        <span class="nameGold">Mr. Kannan</span>
         <span class="nameHeart" aria-hidden="true">♡</span>
         <span class="nameGold">Mrs. Kohila</span>
       </h1>
@@ -43,89 +42,72 @@
         <strong>Venue:</strong> Paradise Inn Bolgoda
       </p>
 
-      <div class="countdown">
-        <div class="timeCard glass">
-          <div class="timeNum" id="d">--</div>
-          <div class="timeLbl">Days</div>
+      <div class="countdown" aria-label="Countdown">
+        <div class="countCard">
+          <div class="countNum" id="d">--</div>
+          <div class="countLbl">Days</div>
         </div>
-        <div class="timeCard glass">
-          <div class="timeNum" id="h">--</div>
-          <div class="timeLbl">Hours</div>
+        <div class="countCard">
+          <div class="countNum" id="h">--</div>
+          <div class="countLbl">Hours</div>
         </div>
-        <div class="timeCard glass">
-          <div class="timeNum" id="m">--</div>
-          <div class="timeLbl">Minutes</div>
+        <div class="countCard">
+          <div class="countNum" id="m">--</div>
+          <div class="countLbl">Minutes</div>
         </div>
-        <div class="timeCard glass">
-          <div class="timeNum" id="s">--</div>
-          <div class="timeLbl">Seconds</div>
+        <div class="countCard">
+          <div class="countNum" id="s">--</div>
+          <div class="countLbl">Seconds</div>
         </div>
       </div>
 
       <h2 class="sectionTitle">Confirm Attendance</h2>
       <p class="sectionHint">Please submit one response per family/reservation.</p>
 
-      <form id="rsvpForm" class="glass formCard" autocomplete="off">
+      <form id="rsvpForm" class="glassForm" autocomplete="off">
         <div class="grid2">
-          <input id="reservationName" name="reservationName" class="input" required
-                 placeholder="Reservation Name *" aria-label="Reservation Name" />
-
-          <input id="phone" name="phone" class="input"
-                 placeholder="Phone (optional)" aria-label="Phone" />
-        </div>
-
-        <div class="grid2">
-          <input id="adults" name="adults" class="input" type="number" min="0" required
-                 placeholder="Adults count *" aria-label="Adults count" />
-
-          <input id="children" name="children" class="input" type="number" min="0"
-                 placeholder="Children count" aria-label="Children count" />
-        </div>
-
-        <div class="grid2">
-          <select id="attending" name="attending" class="input" aria-label="Attending">
-            <option value="Yes" selected>Yes, we will attend</option>
-            <option value="No">No, we can’t attend</option>
-            <option value="Maybe">Maybe</option>
+          <input name="reservationName" required placeholder="Reservation Name *" />
+          <input name="phone" placeholder="Phone (optional)" inputmode="tel" />
+          <input name="adults" required placeholder="Adults count *" inputmode="numeric" />
+          <input name="children" placeholder="Children count" inputmode="numeric" />
+          <select name="attending" required>
+            <option value="Yes">Yes, we will attend</option>
+            <option value="No">No, we will not attend</option>
           </select>
-
-          <input id="note" name="note" class="input"
-                 placeholder="Any note (optional)" aria-label="Short note" />
+          <input name="note" placeholder="Any note (optional)" />
         </div>
 
-        <textarea id="message" name="message" class="input textarea"
-                  placeholder="Message (optional)" aria-label="Message"></textarea>
+        <textarea name="message" rows="4" placeholder="Message (optional)"></textarea>
 
-        <button id="submitBtn" class="btn" type="submit">
-          SUBMIT RSVP <span class="btnHeart" aria-hidden="true">♥</span>
+        <button class="rsvpBtn" type="submit">
+          SUBMIT RSVP <span class="miniHeart" aria-hidden="true">♥</span>
         </button>
 
-        <div id="status" class="status" aria-live="polite"></div>
-        <div id="successBurst" class="successBurst" aria-hidden="true"></div>
+        <div id="success" class="success" aria-live="polite"></div>
       </form>
     </section>
 
-    <section class="card locationCard">
+    <section class="card location">
       <h2 class="sectionTitle">Location</h2>
       <p class="sectionHint">Tap the map for directions.</p>
 
-      <div class="locationGrid glass">
-        <!-- CROPPED MAP BOX (left) -->
-        <div class="mapWrap">
+      <div class="mapGrid">
+        <!-- LEFT: cropped map -->
+        <a class="mapCrop" href="https://www.google.com/maps?q=Paradise+Inn+Bolgoda" target="_blank" rel="noopener">
           <iframe
-            class="mapFrame"
+            title="Paradise Inn Bolgoda Map"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
             src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda&output=embed">
           </iframe>
-        </div>
+        </a>
 
-        <!-- CONTACT (right) -->
-        <div class="contactWrap">
+        <!-- RIGHT: contact panel -->
+        <div class="contactPanel glass">
           <h3 class="contactTitle">For more information</h3>
 
           <div class="contactRow">
-            <span class="icon">📞</span>
+            <span class="ico" aria-hidden="true">📞</span>
             <div>
               <div class="contactLabel">Contact Shan Dk</div>
               <a class="contactLink" href="tel:+94742443456">+94 742443456</a>
@@ -133,7 +115,7 @@
           </div>
 
           <div class="contactRow">
-            <span class="icon">💬</span>
+            <span class="ico" aria-hidden="true">💬</span>
             <div>
               <div class="contactLabel">WhatsApp</div>
               <a class="contactLink" href="https://wa.me/9474005924" target="_blank" rel="noopener">
@@ -143,7 +125,7 @@
           </div>
 
           <div class="contactRow">
-            <span class="icon">✉️</span>
+            <span class="ico" aria-hidden="true">✉️</span>
             <div>
               <div class="contactLabel">Email</div>
               <a class="contactLink" href="mailto:djshan23@live.com">djshan23@live.com</a>
@@ -151,19 +133,21 @@
           </div>
 
           <div class="contactRow">
-            <span class="icon">📍</span>
+            <span class="ico" aria-hidden="true">📍</span>
             <div>
               <div class="contactLabel">Address</div>
               <div class="contactText">No 39/A Rosita Bazar Kotagala</div>
             </div>
           </div>
+
+          <div class="contactNote">
+            (If the music doesn’t start automatically, tap the “music” button once.)
+          </div>
         </div>
       </div>
     </section>
-
-    <footer class="foot">© 2026 • With love 💛</footer>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=1"></script>
 </body>
 </html>
