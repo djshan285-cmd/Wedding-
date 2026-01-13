@@ -1,27 +1,29 @@
-// ====== SET THESE TWO VALUES ======
+// ====== CONFIG ======
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
-// Wedding date (local time). Month is 0-based: 5 = June
-const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // June 27 2026, 7:00 PM
+// Wedding date (Local time). Month is 0-based: 5 = June
+const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // June 27, 2026 7:00 PM
 
-// ====== HELPERS ======
+// ====== Helpers ======
 function pad(n){ return String(n).padStart(2, "0"); }
 
-function setText(id, val){
+function pulse(el){
+  el.classList.remove("pulse");
+  // force reflow
+  void el.offsetWidth;
+  el.classList.add("pulse");
+}
+
+function setTick(id, value){
   const el = document.getElementById(id);
   if (!el) return;
-
-  const newVal = String(val);
-  if (el.textContent !== newVal){
-    el.textContent = newVal;
-    el.classList.remove("tick");
-    // reflow to restart animation
-    void el.offsetWidth;
-    el.classList.add("tick");
+  if (el.textContent !== String(value)){
+    el.textContent = value;
+    pulse(el);
   }
 }
 
-// ====== COUNTDOWN ======
+// ====== Countdown ======
 function updateCountdown(){
   const now = new Date();
   let diff = weddingDate - now;
@@ -33,50 +35,46 @@ function updateCountdown(){
   const mins = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
 
-  setText("d", pad(days));
-  setText("h", pad(hours));
-  setText("m", pad(mins));
-  setText("s", pad(secs));
+  setTick("d", days);
+  setTick("h", pad(hours));
+  setTick("m", pad(mins));
+  setTick("s", pad(secs));
 }
+
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ====== RSVP SUBMIT ======
+// ====== RSVP submit + success animation ======
 const form = document.getElementById("rsvpForm");
-const statusEl = document.getElementById("status");
-const submitBtn = document.getElementById("submitBtn");
-const burst = document.getElementById("successBurst");
+const success = document.getElementById("success");
 
-function showBurst(){
-  if (!burst) return;
-  burst.innerHTML = "";
-  const hearts = ["💛","💖","💞","💗","❤️"];
-  for (let i=0; i<12; i++){
-    const h = document.createElement("div");
-    h.className = "burstHeart";
-    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-    const x = (Math.random()*220 - 110).toFixed(0) + "px";
-    h.style.setProperty("--x", x);
-    h.style.animationDelay = (Math.random()*0.12).toFixed(2) + "s";
-    burst.appendChild(h);
-  }
+function heartBurst(){
+  const span = document.createElement("span");
+  span.className = "heartBurst";
+  span.textContent = "💖";
+  return span;
 }
 
 form?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const fd = new FormData(form);
   const payload = {
-    reservationName: document.getElementById("reservationName")?.value?.trim() || "",
-    phone: document.getElementById("phone")?.value?.trim() || "",
-    adults: document.getElementById("adults")?.value || "",
-    children: document.getElementById("children")?.value || "",
-    attending: document.getElementById("attending")?.value || "Yes",
-    note: document.getElementById("note")?.value?.trim() || "",
-    message: document.getElementById("message")?.value?.trim() || ""
+    reservationName: (fd.get("reservationName") || "").toString().trim(),
+    phone: (fd.get("phone") || "").toString().trim(),
+    adults: (fd.get("adults") || "").toString().trim(),
+    children: (fd.get("children") || "").toString().trim(),
+    attending: (fd.get("attending") || "").toString(),
+    note: (fd.get("note") || "").toString().trim(),
+    message: (fd.get("message") || "").toString().trim(),
   };
 
-  submitBtn.disabled = true;
-  statusEl.textContent = "Submitting…";
+  // quick validation (adults must be number-ish)
+  if (!payload.reservationName) return;
+  if (!payload.adults) return;
+
+  success.textContent = "Submitting...";
+  success.classList.add("show");
 
   try{
     const res = await fetch(APPS_SCRIPT_URL, {
@@ -85,83 +83,114 @@ form?.addEventListener("submit", async (e) => {
       body: JSON.stringify(payload),
     });
 
-    const text = await res.text();
-    let data = {};
-    try { data = JSON.parse(text); } catch {}
+    const data = await res.json().catch(() => ({}));
 
-    if (!res.ok || data.ok === false){
-      throw new Error(data.error || "Submit failed. Please try again.");
+    if (!res.ok || data.ok !== true){
+      throw new Error(data.error || "Submit failed");
     }
 
-    statusEl.style.color = "#1f7a46";
-    statusEl.textContent = "Submitted! Thank you. 💖";
-    showBurst();
+    // Joyful success
+    success.textContent = "Submitted! Thank you.";
+    success.appendChild(heartBurst());
+    success.classList.add("show");
+
     form.reset();
 
   }catch(err){
-    statusEl.style.color = "#b00020";
-    statusEl.textContent = String(err.message || err);
-  }finally{
-    submitBtn.disabled = false;
+    success.textContent = "Sorry — submit failed. Please try again.";
+    success.classList.add("show");
+    console.error(err);
   }
 });
 
-// ====== MUSIC AUTOPLAY (browser-safe) ======
-const music = document.getElementById("bgMusic");
+// ====== Floating hearts + sparkles ======
+function rand(min, max){ return Math.random() * (max - min) + min; }
+
+function makeHearts(){
+  const wrap = document.getElementById("hearts");
+  if (!wrap) return;
+
+  const count = 14;
+  for (let i=0; i<count; i++){
+    const s = document.createElement("span");
+    s.textContent = "♥";
+    s.style.left = rand(0, 100) + "vw";
+    s.style.fontSize = rand(14, 28) + "px";
+    s.style.animationDuration = rand(10, 18) + "s";
+    s.style.animationDelay = rand(0, 6) + "s";
+    wrap.appendChild(s);
+  }
+}
+
+function makeSparkles(){
+  const wrap = document.getElementById("sparkles");
+  if (!wrap) return;
+
+  const count = 22;
+  for (let i=0; i<count; i++){
+    const s = document.createElement("span");
+    s.style.left = rand(0, 100) + "vw";
+    s.style.top = rand(0, 100) + "vh";
+    s.style.animationDuration = rand(2.2, 4.8) + "s";
+    s.style.animationDelay = rand(0, 2.2) + "s";
+    wrap.appendChild(s);
+  }
+}
+
+makeHearts();
+makeSparkles();
+
+// ====== Music autoplay attempt (with fallback) ======
+const bgm = document.getElementById("bgm");
 const musicBtn = document.getElementById("musicBtn");
 
-// You asked: autoplay when link opened.
-// Reality: browsers block autoplay-with-sound.
-// So we do: try play muted -> then unmute on first tap/click anywhere.
-let userUnlocked = false;
-
-function setMusicUI(isOn){
-  if (!musicBtn) return;
-  musicBtn.classList.toggle("on", isOn);
-  musicBtn.textContent = isOn ? "❚❚" : "♪";
-  musicBtn.title = isOn ? "Pause music" : "Play music";
+function fadeTo(audio, target=0.22, ms=800){
+  const start = audio.volume;
+  const t0 = performance.now();
+  function step(t){
+    const p = Math.min(1, (t - t0) / ms);
+    audio.volume = start + (target - start) * p;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
-async function tryAutoPlay(){
-  if (!music) return;
+async function tryAutoplay(){
+  if (!bgm) return;
 
-  music.volume = 0.18;     // mild sound
-  music.muted = true;      // allowed to autoplay
+  bgm.volume = 0.0; // start silent then fade to mild sound
   try{
-    await music.play();
-    setMusicUI(true);
+    await bgm.play();
+    fadeTo(bgm, 0.18, 900);
+    if (musicBtn) musicBtn.style.display = "none";
   }catch{
-    setMusicUI(false);
+    // autoplay blocked -> show button
+    if (musicBtn) musicBtn.style.display = "inline-flex";
   }
 }
-
-function unlockSound(){
-  if (!music || userUnlocked) return;
-  userUnlocked = true;
-  music.muted = false;
-  music.volume = 0.18;
-  music.play().then(()=>setMusicUI(true)).catch(()=>setMusicUI(false));
-}
-
-tryAutoPlay();
-
-// First user interaction unlocks sound
-window.addEventListener("pointerdown", unlockSound, { once:true });
-window.addEventListener("keydown", unlockSound, { once:true });
 
 musicBtn?.addEventListener("click", async () => {
-  if (!music) return;
-
-  // any click counts as unlock
-  if (!userUnlocked){
-    unlockSound();
-    return;
-  }
-
-  if (music.paused){
-    try{ await music.play(); setMusicUI(true); }catch{ setMusicUI(false); }
-  } else {
-    music.pause();
-    setMusicUI(false);
+  if (!bgm) return;
+  try{
+    await bgm.play();
+    fadeTo(bgm, 0.18, 700);
+    musicBtn.textContent = "🔊 Music on (tap to pause)";
+  }catch{
+    // ignore
   }
 });
+
+musicBtn?.addEventListener("dblclick", () => {
+  // quick pause on double click
+  if (!bgm) return;
+  bgm.pause();
+  musicBtn.textContent = "🔈 Tap to play music";
+});
+
+tryAutoplay();
+
+// Also try again on first user interaction (helps on mobile)
+window.addEventListener("pointerdown", () => {
+  if (!bgm) return;
+  if (bgm.paused) tryAutoplay();
+}, { once: true });
