@@ -12,16 +12,11 @@ function pad(n) {
 function updateCountdown() {
   const diff = weddingDate - new Date();
 
-  // If date passed, show zeros
   if (diff <= 0) {
-    const dEl = document.getElementById("d");
-    const hEl = document.getElementById("h");
-    const mEl = document.getElementById("m");
-    const sEl = document.getElementById("s");
-    if (dEl) dEl.textContent = "00";
-    if (hEl) hEl.textContent = "00";
-    if (mEl) mEl.textContent = "00";
-    if (sEl) sEl.textContent = "00";
+    ["d","h","m","s"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = "00";
+    });
     return;
   }
 
@@ -41,12 +36,12 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
 
-// ✅ IMPORTANT: This must be the Web App URL ending with /exec
+// ✅ Your Google Apps Script WEB APP URL (must end with /exec)
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
 
-// RSVP Form submit
+// RSVP
 const form = document.getElementById("rsvpForm");
 const statusEl = document.getElementById("status");
 const submitBtn = document.getElementById("submitBtn");
@@ -87,7 +82,7 @@ if (form) {
     }
 
     try {
-      // no-cors: request will be sent without browser blocking
+      // no-cors: request will be sent; browser won't block
       await fetch(APPS_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
