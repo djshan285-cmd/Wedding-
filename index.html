@@ -5,89 +5,81 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mr. Kannan ♡ Mrs. Kohila — Wedding Reception</title>
 
-  <!-- Base fonts (fallback if Gista Danes not uploaded yet) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <!-- ✅ Your files (MUST be exactly these names) -->
   <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
-  <!-- soft sparkles -->
+  <!-- background image + overlay handled in CSS -->
   <div class="sparkles" aria-hidden="true">
     <span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span>
+    <span></span><span></span>
   </div>
 
   <main class="wrap">
-    <section class="glassCard">
+    <section class="card">
 
-      <div class="topPills">
-        <span class="pill pillGold">WEDDING RECEPTION</span>
-        <span class="pill pillSoft">Colombo • Sri Lanka</span>
+      <div class="pills">
+        <span class="pill gold">WEDDING RECEPTION</span>
+        <span class="pill soft">COLOMBO • SRI LANKA</span>
       </div>
 
-      <!-- ✅ Names (won't overlap: it wraps nicely) -->
       <h1 class="couple">
-        <span class="n1">Mr. Kannan</span>
+        <span class="name">Mr. Kannan</span>
         <span class="heart">♡</span>
-        <span class="n2">Mrs. Kohila</span>
+        <span class="name">Mrs. Kohila</span>
       </h1>
 
-      <p class="invite">
-        With love & joy, we invite you to celebrate with us.
-      </p>
+      <p class="subtitle">With love & joy, we invite you to celebrate with us.</p>
+      <p class="meta"><b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall, Colombo</p>
 
-      <p class="meta">
-        <b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall, Colombo
-      </p>
-
-      <!-- Countdown -->
-      <div class="countRow">
-        <div class="glassBox glowHover">
+      <!-- COUNTDOWN -->
+      <div class="countdown">
+        <div class="box">
           <div id="d" class="num">00</div>
           <div class="lbl">Days</div>
         </div>
-        <div class="glassBox glowHover">
+        <div class="box">
           <div id="h" class="num">00</div>
           <div class="lbl">Hours</div>
         </div>
-        <div class="glassBox glowHover">
+        <div class="box">
           <div id="m" class="num">00</div>
           <div class="lbl">Minutes</div>
         </div>
-        <div class="glassBox glowHover">
+        <div class="box">
           <div id="s" class="num">00</div>
           <div class="lbl">Seconds</div>
         </div>
       </div>
 
-      <div class="divider"></div>
+      <div class="line"></div>
 
-      <h2 class="sectionTitle">Confirm Attendance</h2>
+      <h2 class="title">Confirm Attendance</h2>
       <p class="hint">Please submit one response per family/reservation.</p>
 
-      <!-- RSVP Form -->
+      <!-- FORM -->
       <form id="rsvpForm" class="glassForm">
-        <div class="grid2">
-          <input class="glassInput" name="reservationName" placeholder="Reservation Name *" required />
-          <input class="glassInput" name="phone" placeholder="Phone (optional)" />
+        <div class="row2">
+          <input class="in" name="reservationName" placeholder="Reservation Name *" required />
+          <input class="in" name="phone" placeholder="Phone (optional)" />
         </div>
 
-        <div class="grid2">
-          <input class="glassInput" type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
-          <select class="glassInput" name="attending">
+        <div class="row2">
+          <input class="in" type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
+          <select class="in" name="attending">
             <option value="Yes">Yes, we will attend</option>
             <option value="No">Sorry, cannot attend</option>
           </select>
         </div>
 
-        <textarea class="glassInput glassArea" name="message" placeholder="Message (optional)"></textarea>
+        <textarea class="in area" name="message" placeholder="Message (optional)"></textarea>
 
-        <button id="submitBtn" class="glassButton" type="submit">
+        <button id="submitBtn" class="btn" type="submit">
           <span class="btnShine" aria-hidden="true"></span>
           Submit RSVP
         </button>
@@ -95,7 +87,7 @@
         <div id="status" class="status"></div>
       </form>
 
-      <h2 class="sectionTitle mt">Location</h2>
+      <h2 class="title mt">Location</h2>
       <p class="hint">Tap the map for directions.</p>
 
       <iframe class="map"
@@ -106,7 +98,7 @@
     </section>
   </main>
 
-  <!-- Thank-you popup -->
+  <!-- Thank you popup -->
   <div id="thanksOverlay" class="thanksOverlay" aria-hidden="true">
     <div class="thanksCard">
       <div class="thanksHeart">♡</div>
