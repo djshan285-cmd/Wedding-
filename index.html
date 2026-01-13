@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kannan ❤️ Kohila | Wedding Reception</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1 class="names">Mr. Kannan <span class="and">&</span> Mrs. Kohila</h1>
+    <p class="details"><b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall</p>
+
+    <div class="countdown">
+      <div class="timebox"><div id="d">00</div><small>Days</small></div>
+      <div class="timebox"><div id="h">00</div><small>Hours</small></div>
+      <div class="timebox"><div id="m">00</div><small>Minutes</small></div>
+      <div class="timebox"><div id="s">00</div><small>Seconds</small></div>
+    </div>
+
+    <h2>Location</h2>
+    <iframe class="map"
+      src="https://www.google.com/maps?q=xxxxx+wedding+hall&output=embed"
+      loading="lazy"></iframe>
+
+    <h2>Confirm Attendance</h2>
+    <form id="rsvpForm" class="form">
+      <input name="reservationName" placeholder="Reservation Name" required />
+      <input name="phone" placeholder="Phone (optional)" />
+      <input type="number" name="familyCount" placeholder="Family attending count" min="1" required />
+      <select name="attending">
+        <option value="Yes">Yes, we will attend</option>
+        <option value="No">No, cannot attend</option>
+      </select>
+      <textarea name="message" placeholder="Message (optional)"></textarea>
+      <button id="submitBtn" type="submit">Submit RSVP</button>
+      <div id="status"></div>
+    </form>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
