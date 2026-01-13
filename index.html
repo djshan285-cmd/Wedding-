@@ -13,7 +13,14 @@
 </head>
 
 <body>
-  <!-- background image + overlay handled in CSS -->
+  <!-- floating love hearts background -->
+  <div class="hearts" aria-hidden="true">
+    <span class="h h1">♡</span><span class="h h2">♡</span><span class="h h3">♡</span><span class="h h4">♡</span>
+    <span class="h h5">♡</span><span class="h h6">♡</span><span class="h h7">♡</span><span class="h h8">♡</span>
+    <span class="h h9">♡</span><span class="h h10">♡</span><span class="h h11">♡</span><span class="h h12">♡</span>
+  </div>
+
+  <!-- premium sparkles -->
   <div class="sparkles" aria-hidden="true">
     <span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span>
@@ -35,7 +42,7 @@
       </h1>
 
       <p class="subtitle">With love & joy, we invite you to celebrate with us.</p>
-      <p class="meta"><b>Date:</b> June 27, 2026 • <b>Venue:</b> paradise_inn_bolgoda Wedding Hall, Colombo</p>
+      <p class="meta"><b>Date:</b> June 27, 2026 (Saturday) • <b>Venue:</b> Paradise Inn Bolgoda</p>
 
       <!-- COUNTDOWN -->
       <div class="countdown">
@@ -59,10 +66,11 @@
 
       <div class="line"></div>
 
-      <h2 class="title">Confirm Attendance</h2>
-      <p class="hint">Please submit one response per family/reservation.</p>
+      <div class="centerHead">
+        <h2 class="title">Confirm Attendance</h2>
+        <p class="hint">Please submit one response per family/reservation.</p>
+      </div>
 
-      <!-- FORM -->
       <form id="rsvpForm" class="glassForm">
         <div class="row2">
           <input class="in" name="reservationName" placeholder="Reservation Name *" required />
@@ -87,18 +95,17 @@
         <div id="status" class="status"></div>
       </form>
 
-      <h2 class="title mt">Location</h2>
-      <p class="hint">Tap the map for directions.</p>
+      <h2 class="title mt center">Location</h2>
+      <p class="hint center">Tap the map for directions.</p>
 
       <iframe class="map"
-        src="https://www.google.com/maps?q=Colombo%2C%20Sri%20Lanka&output=embed"
+        src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda%2C%20Sri%20Lanka&output=embed"
         loading="lazy"></iframe>
 
       <div class="footer">Made with ♡ for Kannan & Kohila</div>
     </section>
   </main>
 
-  <!-- Thank you popup -->
   <div id="thanksOverlay" class="thanksOverlay" aria-hidden="true">
     <div class="thanksCard">
       <div class="thanksHeart">♡</div>
