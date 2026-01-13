@@ -3,33 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wedding Invitation</title>
-  <link rel="stylesheet" href="./style.css" />
+  <title>Wedding Reception — Mr. Kannan ♥ Mrs. Kohila</title>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- Floating hearts + sparkles layer -->
-  <div class="fx" aria-hidden="true">
-    <div class="hearts"></div>
-    <div class="sparkles"></div>
+  <!-- floating hearts + sparkles -->
+  <div class="fx">
+    <div class="hearts" aria-hidden="true"></div>
+    <div class="sparkles" aria-hidden="true"></div>
   </div>
 
   <main class="page">
     <section class="card">
-      <!-- Pills -->
-      <div class="pills">
-        <span class="pill pill-gold">WEDDING RECEPTION</span>
-        <span class="pill pill-glass">Colombo • Sri Lanka</span>
+      <div class="topPills">
+        <span class="pill pillGold">WEDDING RECEPTION</span>
+        <span class="pill pillGlass">COLOMBO • SRI LANKA</span>
       </div>
 
-      <!-- Couple Names -->
       <h1 class="names">
-        <span class="name">Mr. Kannan</span>
-        <span class="heart">♡</span>
-        <span class="name">Mrs. Kohila</span>
+        <span class="nameGold">Mr. Kannan</span>
+        <span class="nameHeart" aria-hidden="true">♡</span>
+        <span class="nameGold">Mrs. Kohila</span>
       </h1>
 
-      <p class="subtitle">With love &amp; joy, we invite you to celebrate with us.</p>
+      <p class="subline">With love &amp; joy, we invite you to celebrate with us.</p>
 
       <p class="meta">
         <strong>Date:</strong> June 27, 2026 (Saturday) •
@@ -38,85 +37,95 @@
 
       <!-- Countdown -->
       <div class="countdown" aria-label="Countdown">
-        <div class="timebox">
-          <div class="num" id="d">000</div>
-          <div class="label">Days</div>
+        <div class="cBox">
+          <div class="cNum" id="d">000</div>
+          <div class="cLbl">Days</div>
         </div>
-        <div class="timebox">
-          <div class="num" id="h">00</div>
-          <div class="label">Hours</div>
+        <div class="cBox">
+          <div class="cNum" id="h">00</div>
+          <div class="cLbl">Hours</div>
         </div>
-        <div class="timebox">
-          <div class="num" id="m">00</div>
-          <div class="label">Minutes</div>
+        <div class="cBox">
+          <div class="cNum" id="m">00</div>
+          <div class="cLbl">Minutes</div>
         </div>
-        <div class="timebox">
-          <div class="num" id="s">00</div>
-          <div class="label">Seconds</div>
+        <div class="cBox">
+          <div class="cNum" id="s">00</div>
+          <div class="cLbl">Seconds</div>
         </div>
       </div>
 
       <!-- RSVP -->
-      <section class="rsvp">
-        <h2 class="sectionTitle">Confirm Attendance</h2>
-        <p class="sectionSub">Please submit one response per family/reservation.</p>
+      <div class="sectionTitle">
+        <h2>Confirm Attendance</h2>
+        <p>Please submit one response per family/reservation.</p>
+      </div>
 
-        <form id="rsvpForm" class="glassForm" autocomplete="on">
-          <div class="grid">
-            <div class="field">
-              <label for="reservationName">Reservation Name *</label>
-              <input id="reservationName" name="reservationName" type="text" placeholder="Reservation Name *" required />
-            </div>
-
-            <div class="field">
-              <label for="phone">Phone (optional)</label>
-              <input id="phone" name="phone" type="tel" placeholder="Phone (optional)" />
-            </div>
-
-            <div class="field">
-              <label for="adults">How many will attend? *</label>
-              <input id="adults" name="adults" type="number" min="1" max="50" placeholder="How many will attend? *" required />
-            </div>
-
-            <div class="field">
-              <label for="attending">Attending</label>
-              <select id="attending" name="attending">
-                <option value="Yes">Yes, we will attend</option>
-                <option value="No">No, we can't attend</option>
-              </select>
-            </div>
-
-            <div class="field field-full">
-              <label for="message">Message (optional)</label>
-              <textarea id="message" name="message" rows="4" placeholder="Message (optional)"></textarea>
-            </div>
+      <form id="rsvpForm" class="glassForm" autocomplete="off">
+        <div class="grid2">
+          <div class="field">
+            <label for="reservationName">Reservation Name *</label>
+            <input id="reservationName" name="reservationName" type="text" placeholder="Reservation Name *" required />
           </div>
 
-          <button id="submitBtn" class="btn" type="submit">
-            <span>Submit RSVP</span>
-          </button>
+          <div class="field">
+            <label for="phone">Phone (optional)</label>
+            <input id="phone" name="phone" type="tel" placeholder="Phone (optional)" />
+          </div>
 
-          <div id="status" class="status" aria-live="polite"></div>
-        </form>
-      </section>
+          <div class="field">
+            <label for="adults">Adults count *</label>
+            <input id="adults" name="adults" type="number" min="0" step="1" placeholder="Adults count *" required />
+          </div>
+
+          <div class="field">
+            <label for="children">Children count</label>
+            <input id="children" name="children" type="number" min="0" step="1" placeholder="Children count" />
+          </div>
+
+          <div class="field">
+            <label for="attending">Attending</label>
+            <select id="attending" name="attending">
+              <option value="Yes">Yes, we will attend</option>
+              <option value="No">No, we can't attend</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="note">Short note (optional)</label>
+            <input id="note" name="note" type="text" placeholder="Any note (optional)" />
+          </div>
+        </div>
+
+        <div class="field full">
+          <label for="message">Message (optional)</label>
+          <textarea id="message" name="message" rows="5" placeholder="Message (optional)"></textarea>
+        </div>
+
+        <button id="submitBtn" class="btn" type="submit">
+          SUBMIT RSVP <span class="btnHeart">♥</span>
+        </button>
+
+        <div id="status" class="status" aria-live="polite"></div>
+      </form>
 
       <!-- Location -->
-      <section class="location">
-        <h2 class="sectionTitle">Location</h2>
-        <p class="sectionSub">Tap the map for directions.</p>
+      <div class="sectionTitle mt">
+        <h2>Location</h2>
+        <p>Tap the map for directions.</p>
+      </div>
 
-        <div class="mapWrap glass">
-          <iframe
-            title="Paradise Inn Bolgoda Map"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda&output=embed">
-          </iframe>
-        </div>
-      </section>
+      <div class="mapWrap glassMap">
+        <iframe
+          title="Paradise Inn Bolgoda location"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda&output=embed">
+        </iframe>
+      </div>
     </section>
   </main>
 
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
