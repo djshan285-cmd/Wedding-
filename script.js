@@ -10,8 +10,8 @@ const APPS_SCRIPT_URL =
 const weddingDate = new Date(2026, 5, 27, 19, 0, 0);
 
 // Dropdown max
-const MAX_ADULTS = 3;
-const MAX_CHILDREN = 3;
+const MAX_ADULTS = 2;
+const MAX_CHILDREN = 2;
 
 // ============================
 // Helpers
