@@ -1,153 +1,77 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wedding Reception — Mr. Kannan ♥ Mrs. Kohila</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
+<!-- ✅ CLEAN FORM (Option 1) — no label/headings, only placeholders -->
+<form id="rsvpForm" class="glassForm">
+  <div class="grid2">
+    <div class="field">
+      <input
+        type="text"
+        id="reservationName"
+        name="reservationName"
+        placeholder="Reservation Name *"
+        required
+      />
+    </div>
 
-<body>
-  <!-- floating hearts + sparkles -->
-  <div class="fx" aria-hidden="true">
-    <div class="hearts"></div>
-    <div class="sparkles"></div>
+    <div class="field">
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        placeholder="Phone (optional)"
+      />
+    </div>
+
+    <div class="field">
+      <input
+        type="number"
+        id="adults"
+        name="adults"
+        min="0"
+        step="1"
+        placeholder="Adults count *"
+        required
+      />
+    </div>
+
+    <div class="field">
+      <input
+        type="number"
+        id="children"
+        name="children"
+        min="0"
+        step="1"
+        placeholder="Children count"
+      />
+    </div>
+
+    <div class="field">
+      <select id="attending" name="attending" required>
+        <option value="Yes" selected>Yes, we will attend</option>
+        <option value="No">Sorry, we can’t attend</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <input
+        type="text"
+        id="note"
+        name="note"
+        placeholder="Any note (optional)"
+      />
+    </div>
   </div>
 
-  <main class="page">
-    <section class="card">
-      <div class="topPills">
-        <span class="pill pillGold">WEDDING RECEPTION</span>
-        <span class="pill pillGlass">COLOMBO • SRI LANKA</span>
-      </div>
+  <div class="field">
+    <textarea
+      id="message"
+      name="message"
+      rows="4"
+      placeholder="Message (optional)"
+    ></textarea>
+  </div>
 
-      <h1 class="names">
-        <span class="nameGold">Mr. Kannan</span>
-        <span class="nameHeart" aria-hidden="true">♡</span>
-        <span class="nameGold">Mrs. Kohila</span>
-      </h1>
+  <button id="submitBtn" type="submit" class="btn">
+    SUBMIT RSVP <span class="btnHeart" aria-hidden="true">♥</span>
+  </button>
 
-      <p class="subline">With love &amp; joy, we invite you to celebrate with us.</p>
-
-      <p class="meta">
-        <strong>Date:</strong> June 27, 2026 (Saturday) •
-        <strong>Venue:</strong> Paradise Inn Bolgoda
-      </p>
-
-      <div class="countdown">
-        <div class="cdBox">
-          <div class="cdNum" id="d">000</div>
-          <div class="cdLbl">Days</div>
-        </div>
-        <div class="cdBox">
-          <div class="cdNum" id="h">00</div>
-          <div class="cdLbl">Hours</div>
-        </div>
-        <div class="cdBox">
-          <div class="cdNum" id="m">00</div>
-          <div class="cdLbl">Minutes</div>
-        </div>
-        <div class="cdBox">
-          <div class="cdNum" id="s">00</div>
-          <div class="cdLbl">Seconds</div>
-        </div>
-      </div>
-
-      <h2 class="sectionTitle center">Confirm Attendance</h2>
-      <p class="sectionSub center">Please submit one response per family/reservation.</p>
-
-      <!-- ✅ Labels removed (only placeholders remain) -->
-      <form id="rsvpForm" class="glassForm">
-        <div class="grid2">
-          <div class="field">
-            <input
-              type="text"
-              id="reservationName"
-              name="reservationName"
-              placeholder="Reservation Name *"
-              required
-            />
-          </div>
-
-          <div class="field">
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              placeholder="Phone (optional)"
-            />
-          </div>
-
-          <div class="field">
-            <input
-              type="number"
-              id="adults"
-              name="adults"
-              min="0"
-              step="1"
-              placeholder="Adults count *"
-              required
-            />
-          </div>
-
-          <div class="field">
-            <input
-              type="number"
-              id="children"
-              name="children"
-              min="0"
-              step="1"
-              placeholder="Children count"
-            />
-          </div>
-
-          <div class="field">
-            <select id="attending" name="attending" required>
-              <option value="Yes" selected>Yes, we will attend</option>
-              <option value="No">Sorry, we can’t attend</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <input
-              type="text"
-              id="note"
-              name="note"
-              placeholder="Any note (optional)"
-            />
-          </div>
-        </div>
-
-        <div class="field">
-          <textarea
-            id="message"
-            name="message"
-            rows="4"
-            placeholder="Message (optional)"
-          ></textarea>
-        </div>
-
-        <button id="submitBtn" type="submit" class="btn">
-          SUBMIT RSVP <span class="btnHeart" aria-hidden="true">♥</span>
-        </button>
-
-        <div id="status" class="status" aria-live="polite"></div>
-      </form>
-
-      <h2 class="sectionTitle center">Location</h2>
-      <p class="sectionSub center">Tap the map for directions.</p>
-
-      <div class="mapWrap">
-        <iframe
-          title="Paradise Inn Bolgoda"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda&output=embed"
-        ></iframe>
-      </div>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
-</body>
-</html>
+  <div id="status" class="status" aria-live="polite"></div>
+</form>
