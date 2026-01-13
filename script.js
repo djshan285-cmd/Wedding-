@@ -1,11 +1,29 @@
-// =========================
-// 1) COUNTDOWN (June 27, 2026 7:00 PM local)
-// =========================
-const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // month is 0-based (5 = June)
+// ✅ Wedding date (Local time). Month is 0-based: 5 = June
+const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // June 27, 2026 7:00 PM
 
-function pad(n){ return String(n).padStart(2, "0"); }
+function pad(n) { return String(n).padStart(2, "0"); }
 
-function updateCountdown(){
+// ✅ Google Apps Script Web App /exec URL
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
+
+// Countdown elements
+const elD = document.getElementById("d");
+const elH = document.getElementById("h");
+const elM = document.getElementById("m");
+const elS = document.getElementById("s");
+
+// For tick animation comparison
+let last = { d: null, h: null, m: null, s: null };
+
+function tick(el) {
+  el.classList.remove("tick");
+  // force reflow so animation re-triggers
+  void el.offsetWidth;
+  el.classList.add("tick");
+}
+
+function updateCountdown() {
   const now = new Date();
   let diff = weddingDate - now;
   if (diff < 0) diff = 0;
@@ -16,169 +34,162 @@ function updateCountdown(){
   const mins = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
 
-  document.getElementById("d").textContent = pad(days);
-  document.getElementById("h").textContent = pad(hours);
-  document.getElementById("m").textContent = pad(mins);
-  document.getElementById("s").textContent = pad(secs);
+  const next = {
+    d: pad(days),
+    h: pad(hours),
+    m: pad(mins),
+    s: pad(secs),
+  };
+
+  if (last.d !== null && last.d !== next.d) tick(elD);
+  if (last.h !== null && last.h !== next.h) tick(elH);
+  if (last.m !== null && last.m !== next.m) tick(elM);
+  if (last.s !== null && last.s !== next.s) tick(elS);
+
+  elD.textContent = next.d;
+  elH.textContent = next.h;
+  elM.textContent = next.m;
+  elS.textContent = next.s;
+
+  last = next;
 }
+
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// =========================
-// 2) BACKGROUND HEARTS + SPARKLES
-// =========================
-function spawnHearts(){
-  const wrap = document.getElementById("hearts");
-  if (!wrap) return;
-
-  wrap.innerHTML = "";
-  const count = 18;
-
-  for (let i=0;i<count;i++){
-    const h = document.createElement("div");
-    h.className = "h";
-
-    const left = Math.random() * 100;
-    const size = 14 + Math.random() * 26;
-    const dur = 9 + Math.random() * 10;
-    const delay = Math.random() * 6;
-    const drift = (Math.random() * 80 - 40).toFixed(0) + "px";
-    const alpha = (0.25 + Math.random() * 0.35).toFixed(2);
-
-    h.style.left = left + "vw";
-    h.style.setProperty("--size", size + "px");
-    h.style.setProperty("--a", alpha);
-    h.style.setProperty("--drift", drift);
-    h.style.animationDuration = dur + "s";
-    h.style.animationDelay = delay + "s";
-
-    wrap.appendChild(h);
-  }
-}
-
-function spawnSparkles(){
-  const wrap = document.getElementById("sparkles");
-  if (!wrap) return;
-
-  wrap.innerHTML = "";
-  const count = 26;
-
-  for (let i=0;i<count;i++){
-    const sp = document.createElement("div");
-    sp.className = "sp";
-    sp.style.left = (Math.random() * 100) + "vw";
-    sp.style.top = (Math.random() * 100) + "vh";
-    sp.style.animationDelay = (Math.random() * 3.5) + "s";
-    sp.style.opacity = (0.25 + Math.random() * 0.55).toFixed(2);
-    wrap.appendChild(sp);
-  }
-}
-
-spawnHearts();
-spawnSparkles();
-window.addEventListener("resize", () => {
-  spawnHearts();
-  spawnSparkles();
-});
-
-// =========================
-// 3) GOOGLE APPS SCRIPT WEB APP (YOUR EXEC URL)
-// =========================
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
-
-// =========================
-// 4) RSVP SUBMIT
-// =========================
+// ===== RSVP Submit =====
 const form = document.getElementById("rsvpForm");
 const statusEl = document.getElementById("status");
 const submitBtn = document.getElementById("submitBtn");
 
-function setStatus(type, msg){
+function setStatus(type, msg) {
   statusEl.className = "status " + (type || "");
-  statusEl.textContent = msg || "";
+  statusEl.innerHTML = msg || "";
 }
 
-function heartBurst(x, y){
-  const wrap = document.createElement("div");
-  wrap.className = "burst";
-  wrap.style.setProperty("--x", x + "px");
-  wrap.style.setProperty("--y", y + "px");
+function makeConfettiHTML() {
+  // small joyful burst, uses CSS variables for spread
+  const pieces = [];
+  for (let i = 0; i < 16; i++) {
+    const x = (Math.random() * 180 - 90).toFixed(0) + "px";
+    const d = (Math.random() * 0.15).toFixed(2) + "s";
+    const h = (Math.random() * 360).toFixed(0);
 
-  const pieces = 10;
-  for (let i=0;i<pieces;i++){
-    const el = document.createElement("i");
-    el.textContent = "♥";
-    const dx = (Math.random()*180 - 90).toFixed(0) + "px";
-    const dy = (Math.random()*160 - 90).toFixed(0) + "px";
-    el.style.setProperty("--dx", dx);
-    el.style.setProperty("--dy", dy);
-    el.style.fontSize = (14 + Math.random()*14).toFixed(0) + "px";
-    wrap.appendChild(el);
+    pieces.push(
+      `<i style="left:${50 + Math.random() * 10 - 5}%;
+                top:${Math.random() * 6}px;
+                background:hsl(${h} 80% 70%);
+                --x:${x};
+                animation-delay:${d};"></i>`
+    );
+  }
+  return `<span class="confetti" aria-hidden="true">${pieces.join("")}</span>`;
+}
+
+async function postRSVP(payload) {
+  // IMPORTANT: use text/plain to avoid CORS preflight
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+  });
+
+  // Try to parse JSON (if available)
+  let data = null;
+  try {
+    data = await res.json();
+  } catch (_) {}
+
+  if (!res.ok) throw new Error("Network error");
+  if (data && data.ok === false) throw new Error(data.error || "Server error");
+
+  return true;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // Basic validation
+  const reservationName = (document.getElementById("reservationName").value || "").trim();
+  const phone = (document.getElementById("phone").value || "").trim();
+  const adults = document.getElementById("adults").value;
+  const children = document.getElementById("children").value;
+  const attending = document.getElementById("attending").value;
+  const note = (document.getElementById("note").value || "").trim();
+  const message = (document.getElementById("message").value || "").trim();
+
+  if (!reservationName) {
+    setStatus("err", "❌ Please enter Reservation Name.");
+    return;
+  }
+  if (adults === "" || Number(adults) < 0) {
+    setStatus("err", "❌ Please enter Adults count.");
+    return;
   }
 
-  document.body.appendChild(wrap);
-  setTimeout(() => wrap.remove(), 950);
-}
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = "0.75";
+  setStatus("", "Submitting...");
 
-if (form){
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault(); // IMPORTANT: stops GET submit (your “plain boxes” issue)
+  const payload = {
+    reservationName,
+    phone,
+    adults: Number(adults),
+    children: children === "" ? "" : Number(children),
+    attending,
+    note,
+    message,
+  };
 
-    // quick validation
-    const reservationName = document.getElementById("reservationName").value.trim();
-    const adults = document.getElementById("adults").value.trim();
+  try {
+    await postRSVP(payload);
 
-    if (!reservationName || !adults){
-      setStatus("err", "Please enter Reservation Name and Adults count.");
-      return;
-    }
+    // success UI
+    const burst =
+      `<span class="burst">
+        <span class="burstHeart">💖</span>
+        <span>Submitted! Thank you.</span>
+        ${makeConfettiHTML()}
+      </span>`;
 
-    if (!APPS_SCRIPT_URL || !APPS_SCRIPT_URL.includes("/exec")){
-      setStatus("err", "Apps Script URL not set correctly.");
-      return;
-    }
+    setStatus("ok", burst);
 
-    // collect data
-    const payload = {
-      reservationName,
-      phone: document.getElementById("phone").value.trim(),
-      adults: Number(document.getElementById("adults").value || 0),
-      children: Number(document.getElementById("children").value || 0),
-      attending: document.getElementById("attending").value,
-      message: document.getElementById("message").value.trim(),
-      note: document.getElementById("note").value.trim()
-    };
+    // Keep the form but clear fields (optional)
+    form.reset();
 
-    submitBtn.disabled = true;
-    setStatus("", "Submitting...");
-
-    try {
-      // IMPORTANT: text/plain avoids CORS preflight (works best with Apps Script)
-      const res = await fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      });
-
-      const text = await res.text();
-      let data;
-      try { data = JSON.parse(text); } catch { data = { ok:false, raw:text }; }
-
-      if (data.ok){
-        const rect = submitBtn.getBoundingClientRect();
-        heartBurst(rect.left + rect.width/2, rect.top + rect.height/2);
-
-        setStatus("ok", "✅ Submitted! Thank you.");
-        form.reset();
-      } else {
-        setStatus("err", "❌ Submit failed. Check Apps Script permissions / deployment.");
-      }
-
-    } catch (err){
-      setStatus("err", "❌ Network error. Try again.");
-    } finally {
+    // re-enable after a short time (optional)
+    setTimeout(() => {
       submitBtn.disabled = false;
-    }
-  });
-}
+      submitBtn.style.opacity = "1";
+    }, 1200);
+
+  } catch (err) {
+    setStatus("err", "❌ Submit failed. Please try again.");
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = "1";
+  }
+});
+
+// ===== Background Music Autoplay Fix =====
+// Autoplay may be blocked until user interacts once.
+// We try autoplay immediately, then unlock on first click/tap.
+(function musicAutoplay() {
+  const music = document.getElementById("bgMusic");
+  if (!music) return;
+
+  // mild volume
+  music.volume = 0.25;
+
+  // try immediately
+  music.play().catch(() => { /* ignored */ });
+
+  const unlock = () => {
+    music.volume = 0.25;
+    music.play().catch(() => {});
+    window.removeEventListener("touchstart", unlock);
+    window.removeEventListener("click", unlock);
+  };
+
+  window.addEventListener("touchstart", unlock, { once: true, passive: true });
+  window.addEventListener("click", unlock, { once: true });
+})();
