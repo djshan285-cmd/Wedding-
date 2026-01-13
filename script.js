@@ -1,16 +1,14 @@
-// ✅ Wedding date/time (June 27, 2026)
+// ✅ Wedding date (June 27, 2026)
 const weddingDate = new Date("2026-06-27T19:00:00");
 
 function pad(n){ return String(n).padStart(2,"0"); }
 
 function updateCountdown(){
   const diff = weddingDate - new Date();
-
   if(diff <= 0){
     ["d","h","m","s"].forEach(id => document.getElementById(id).textContent = "00");
     return;
   }
-
   const t = Math.floor(diff/1000);
   const days  = Math.floor(t/(3600*24));
   const hours = Math.floor((t%(3600*24))/3600);
@@ -25,7 +23,7 @@ function updateCountdown(){
 setInterval(updateCountdown,1000);
 updateCountdown();
 
-// ✅ Your Apps Script Web App URL
+// ✅ Your Web App URL
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
@@ -37,7 +35,6 @@ function showThanksPopup(){
   const overlay = document.getElementById("thanksOverlay");
   overlay.classList.add("show");
   overlay.setAttribute("aria-hidden","false");
-
   setTimeout(() => {
     overlay.classList.remove("show");
     overlay.setAttribute("aria-hidden","true");
@@ -54,13 +51,15 @@ form.addEventListener("submit", async (e) => {
   const payload = {
     reservationName: (fd.get("reservationName") || "").toString().trim(),
     phone: (fd.get("phone") || "").toString().trim(),
-    familyCount: (fd.get("familyCount") || "").toString().trim(),
+    adults: (fd.get("adults") || "").toString().trim(),
+    children: (fd.get("children") || "0").toString().trim(),
     attending: (fd.get("attending") || "Yes").toString(),
+    messageShort: (fd.get("messageShort") || "").toString().trim(),
     message: (fd.get("message") || "").toString().trim(),
   };
 
-  if(!payload.reservationName || !payload.familyCount){
-    statusEl.textContent = "Please enter Reservation Name and Family Count.";
+  if(!payload.reservationName || !payload.adults){
+    statusEl.textContent = "Please enter Reservation Name and Adults count.";
     submitBtn.disabled = false;
     return;
   }
