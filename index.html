@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wedding Reception — Mr. Kannan ♥ Mrs. Kohila</title>
 
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
+  <!-- IMPORTANT: keep these EXACT paths -->
+  <link rel="stylesheet" href="./style.css?v=1" />
+  <script src="./script.js?v=1" defer></script>
 </head>
 
 <body>
@@ -18,12 +19,15 @@
 
   <main class="page">
     <section class="card">
+
+      <!-- top pills -->
       <div class="topPills">
         <span class="pill pillGold">WEDDING RECEPTION</span>
         <span class="pill pillGlass">COLOMBO • SRI LANKA</span>
       </div>
 
-      <h1 class="names" aria-label="Mr. Kannan and Mrs. Kohila">
+      <!-- names -->
+      <h1 class="names">
         <span class="nameGold">Mr. Kannan</span>
         <span class="nameHeart" aria-hidden="true">♡</span>
         <span class="nameGold">Mrs. Kohila</span>
@@ -36,92 +40,96 @@
         <strong>Venue:</strong> Paradise Inn Bolgoda
       </p>
 
-      <div class="countdown" aria-label="Countdown">
-        <div class="cBox">
-          <div class="cNum" id="d">00</div>
-          <div class="cLab">Days</div>
+      <!-- countdown -->
+      <div class="countGrid" aria-label="Countdown">
+        <div class="countBox">
+          <div class="countNum" id="d">00</div>
+          <div class="countLbl">Days</div>
         </div>
-        <div class="cBox">
-          <div class="cNum" id="h">00</div>
-          <div class="cLab">Hours</div>
+        <div class="countBox">
+          <div class="countNum" id="h">00</div>
+          <div class="countLbl">Hours</div>
         </div>
-        <div class="cBox">
-          <div class="cNum" id="m">00</div>
-          <div class="cLab">Minutes</div>
+        <div class="countBox">
+          <div class="countNum" id="m">00</div>
+          <div class="countLbl">Minutes</div>
         </div>
-        <div class="cBox">
-          <div class="cNum" id="s">00</div>
-          <div class="cLab">Seconds</div>
+        <div class="countBox">
+          <div class="countNum" id="s">00</div>
+          <div class="countLbl">Seconds</div>
         </div>
       </div>
 
+      <!-- confirm attendance (CENTER like your screenshot) -->
       <div class="rsvpHeader">
         <h2>Confirm Attendance</h2>
         <p>Please submit one response per family/reservation.</p>
       </div>
 
-      <form id="rsvpForm" class="glassForm" novalidate>
+      <!-- RSVP FORM -->
+      <form id="rsvpForm" class="glassForm" autocomplete="on" novalidate>
         <div class="grid2">
           <div class="field">
-            <label>Reservation Name <span class="req">*</span></label>
-            <input id="reservationName" name="reservationName" type="text" placeholder="Reservation Name *" required />
+            <!-- NO TOP HEADING labels (as you requested) -->
+            <input id="reservationName" name="reservationName" type="text"
+              placeholder="Reservation Name *" required />
           </div>
 
           <div class="field">
-            <label>Phone (optional)</label>
-            <input id="phone" name="phone" type="text" placeholder="Phone (optional)" inputmode="tel" />
+            <input id="phone" name="phone" type="tel"
+              placeholder="Phone (optional)" />
           </div>
 
           <div class="field">
-            <label>Adults count <span class="req">*</span></label>
-            <input id="adults" name="adults" type="number" placeholder="Adults count *" min="0" step="1" required />
+            <input id="adults" name="adults" type="number" min="1" step="1"
+              placeholder="Adults count *" required />
           </div>
 
           <div class="field">
-            <label>Children count</label>
-            <input id="children" name="children" type="number" placeholder="Children count" min="0" step="1" value="0" />
+            <input id="children" name="children" type="number" min="0" step="1"
+              placeholder="Children count" />
           </div>
 
           <div class="field">
-            <label>Attending</label>
-            <select id="attending" name="attending">
+            <select id="attending" name="attending" required>
               <option value="Yes" selected>Yes, we will attend</option>
-              <option value="No">No, we cannot attend</option>
-              <option value="Maybe">Maybe</option>
+              <option value="No">No, we can’t attend</option>
             </select>
           </div>
 
           <div class="field">
-            <label>Short note (optional)</label>
-            <input id="note" name="note" type="text" placeholder="Any note (optional)" />
+            <input id="note" name="note" type="text"
+              placeholder="Any note (optional)" />
           </div>
         </div>
 
         <div class="field full">
-          <label>Message (optional)</label>
-          <textarea id="message" name="message" rows="4" placeholder="Message (optional)"></textarea>
+          <textarea id="message" name="message" rows="4"
+            placeholder="Message (optional)"></textarea>
         </div>
 
-        <button id="submitBtn" class="btn" type="submit">
+        <button id="submitBtn" type="submit" class="btn">
           SUBMIT RSVP <span class="btnHeart" aria-hidden="true">♥</span>
         </button>
 
-        <div id="status" class="status" aria-live="polite"></div>
+        <div id="status" class="status" role="status" aria-live="polite"></div>
       </form>
 
-      <div class="location">
+      <!-- LOCATION -->
+      <section class="loc">
         <h3>Location</h3>
         <p>Tap the map for directions.</p>
 
         <div class="mapWrap">
           <iframe
-            title="Paradise Inn Bolgoda map"
+            title="Paradise Inn Bolgoda Map"
             src="https://www.google.com/maps?q=Paradise%20Inn%20Bolgoda&output=embed"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>
         </div>
-      </div>
+      </section>
+
     </section>
   </main>
 </body>
