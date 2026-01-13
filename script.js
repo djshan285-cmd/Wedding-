@@ -1,4 +1,4 @@
-// ✅ Wedding date (June 27, 2026)
+// Wedding date: June 27, 2026
 const weddingDate = new Date("2026-06-27T19:00:00");
 
 function pad(n){ return String(n).padStart(2,"0"); }
@@ -23,7 +23,7 @@ function updateCountdown(){
 setInterval(updateCountdown,1000);
 updateCountdown();
 
-// ✅ Your Web App URL
+// ✅ Your Apps Script URL
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
@@ -34,11 +34,7 @@ const submitBtn = document.getElementById("submitBtn");
 function showThanksPopup(){
   const overlay = document.getElementById("thanksOverlay");
   overlay.classList.add("show");
-  overlay.setAttribute("aria-hidden","false");
-  setTimeout(() => {
-    overlay.classList.remove("show");
-    overlay.setAttribute("aria-hidden","true");
-  }, 1800);
+  setTimeout(() => overlay.classList.remove("show"), 1600);
 }
 
 form.addEventListener("submit", async (e) => {
@@ -58,6 +54,7 @@ form.addEventListener("submit", async (e) => {
     message: (fd.get("message") || "").toString().trim(),
   };
 
+  // ✅ FIXED validation message (NO "Family Count")
   if(!payload.reservationName || !payload.adults){
     statusEl.textContent = "Please enter Reservation Name and Adults count.";
     submitBtn.disabled = false;
