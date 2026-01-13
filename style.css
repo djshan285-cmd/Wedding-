@@ -102,4 +102,149 @@
 
   <script src="script.js"></script>
 </body>
-</html>
+</html>/* =========================
+   FIX ALIGNMENT + PREMIUM LOOK
+   (Works with your existing HTML)
+   Paste at the END of style.css
+========================= */
+
+/* Make sure everything is centered */
+.card, .details, .muted, .bless, .subline { text-align: center; }
+
+/* -------------------------
+   NAMES (fix font + center)
+   Your HTML uses .names and likely .name1/.name2/.amp
+------------------------- */
+.names{
+  text-align:center !important;
+  margin: 12px auto 8px !important;
+  line-height: 1.12 !important;
+  padding: 0 8px;
+}
+
+/* If your HTML uses .name1/.name2 */
+.name1, .name2{
+  font-family: "Alex Brush", cursive !important;
+  font-weight: 400 !important;
+  font-size: 76px !important;
+  letter-spacing: 0.01em !important;
+  display: inline-block !important;
+
+  background: linear-gradient(90deg,#fff3b0,#f6d365,#ffb703,#ff4d6d,#f6d365) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+
+  filter: drop-shadow(0 16px 30px rgba(0,0,0,0.10)) !important;
+}
+
+/* Heart or & between names */
+.amp, .heartAmp{
+  font-family: "Cinzel", serif !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  color: rgba(255,77,109,0.95) !important;
+  margin: 0 12px !important;
+  display: inline-block !important;
+  transform: translateY(-10px) !important;
+  text-shadow: 0 10px 20px rgba(255,204,102,0.20) !important;
+}
+
+/* Responsive (no overlap) */
+@media (max-width: 900px){
+  .name1, .name2{ font-size: 62px !important; }
+}
+@media (max-width: 720px){
+  .name1, .name2{ font-size: 48px !important; display:block !important; }
+  .amp, .heartAmp{ display:block !important; transform:none !important; margin:6px 0 !important; }
+}
+
+/* -------------------------
+   QUOTE LINE (the one you circled)
+   If your HTML uses .bless or .subline
+------------------------- */
+.subline, .bless{
+  max-width: 780px !important;
+  margin: 10px auto 14px !important;
+  padding: 12px 14px !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,0.40) !important;
+  border: 1px solid rgba(255,255,255,0.65) !important;
+  backdrop-filter: blur(18px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
+}
+
+/* -------------------------
+   GLASS STYLE (transparent outline like your ref image #3)
+------------------------- */
+.glass, .form, .timebox{
+  position: relative !important;
+  overflow: hidden !important;
+  background: rgba(255,255,255,0.12) !important;
+  border: 1px solid rgba(255,255,255,0.65) !important;
+  backdrop-filter: blur(24px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(170%) !important;
+  box-shadow:
+    0 26px 70px rgba(0,0,0,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.55),
+    inset 0 -20px 38px rgba(0,0,0,0.06) !important;
+}
+
+/* Glass shine layer */
+.glass::before, .form::before, .timebox::before{
+  content:"" !important;
+  position:absolute !important;
+  inset:-50% !important;
+  transform: rotate(18deg) translateX(-60%) !important;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.00),
+    rgba(255,255,255,0.40),
+    rgba(255,255,255,0.00)) !important;
+  opacity:0.55 !important;
+  animation: glassShineFix 7s ease-in-out infinite !important;
+  pointer-events:none !important;
+}
+@keyframes glassShineFix{
+  0%{ transform: rotate(18deg) translateX(-70%); opacity:0; }
+  25%{ opacity:0.55; }
+  55%{ transform: rotate(18deg) translateX(70%); opacity:0.25; }
+  100%{ transform: rotate(18deg) translateX(70%); opacity:0; }
+}
+
+/* -------------------------
+   COUNTDOWN BOXES GLOW HOVER
+------------------------- */
+.timebox{
+  border-radius: 22px !important;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease !important;
+}
+.timebox:hover{
+  transform: translateY(-4px) !important;
+  border-color: rgba(255,204,102,0.95) !important;
+  box-shadow:
+    0 34px 95px rgba(0,0,0,0.14),
+    0 0 0 6px rgba(255,204,102,0.16),
+    0 0 55px rgba(255,77,109,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.55) !important;
+}
+
+/* -------------------------
+   FORM INPUTS MORE GLASS
+------------------------- */
+input,select,textarea{
+  background: rgba(255,255,255,0.10) !important;
+  border: 1px solid rgba(255,255,255,0.70) !important;
+  backdrop-filter: blur(18px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
+  box-shadow:
+    0 12px 28px rgba(0,0,0,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.50) !important;
+}
+input:focus,select:focus,textarea:focus{
+  border-color: rgba(255,204,102,0.95) !important;
+  box-shadow:
+    0 0 0 5px rgba(255,204,102,0.14),
+    0 12px 28px rgba(0,0,0,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.50) !important;
+}
+
