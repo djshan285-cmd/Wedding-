@@ -1,4 +1,4 @@
-// Wedding date/time (set as you want)
+// Wedding date/time
 const weddingDate = new Date("2026-06-26T19:00:00");
 
 function pad(n){ return String(n).padStart(2,"0"); }
@@ -25,7 +25,7 @@ function updateCountdown(){
 setInterval(updateCountdown,1000);
 updateCountdown();
 
-// ✅ Your Google Apps Script Web App URL
+// ✅ Your Apps Script Web App URL
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
@@ -66,7 +66,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   try{
-    // no-cors avoids browser blocking (Apps Script response not readable)
+    // no-cors avoids CORS block. Data still reaches your sheet.
     await fetch(APPS_SCRIPT_URL, {
       method:"POST",
       mode:"no-cors",
@@ -77,7 +77,6 @@ form.addEventListener("submit", async (e) => {
     statusEl.textContent = "✅ Submitted! Thank you.";
     showThanksPopup();
     form.reset();
-
   }catch(err){
     statusEl.textContent = "❌ Network error. Please try again.";
   }finally{
