@@ -1,5 +1,5 @@
-// Wedding date/time
-const weddingDate = new Date("2026-06-26T19:00:00");
+// ✅ Wedding date/time (June 27, 2026)
+const weddingDate = new Date("2026-06-27T19:00:00");
 
 function pad(n){ return String(n).padStart(2,"0"); }
 
@@ -66,7 +66,6 @@ form.addEventListener("submit", async (e) => {
   }
 
   try{
-    // no-cors avoids CORS block. Data still reaches your sheet.
     await fetch(APPS_SCRIPT_URL, {
       method:"POST",
       mode:"no-cors",
