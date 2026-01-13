@@ -1,5 +1,7 @@
-// Wedding date: June 27, 2026 (Saturday) 7:00 PM
-const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // month=5 is June
+// =========================
+// 1) COUNTDOWN (June 27, 2026 7:00 PM local)
+// =========================
+const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // month is 0-based (5 = June)
 
 function pad(n){ return String(n).padStart(2, "0"); }
 
@@ -9,10 +11,10 @@ function updateCountdown(){
   if (diff < 0) diff = 0;
 
   const totalSeconds = Math.floor(diff / 1000);
-  const days  = Math.floor(totalSeconds / (3600 * 24));
+  const days = Math.floor(totalSeconds / (3600 * 24));
   const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-  const mins  = Math.floor((totalSeconds % 3600) / 60);
-  const secs  = totalSeconds % 60;
+  const mins = Math.floor((totalSeconds % 3600) / 60);
+  const secs = totalSeconds % 60;
 
   document.getElementById("d").textContent = pad(days);
   document.getElementById("h").textContent = pad(hours);
@@ -22,115 +24,161 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ✅ Your Web App /exec URL (THIS ONE IS CORRECT)
+// =========================
+// 2) BACKGROUND HEARTS + SPARKLES
+// =========================
+function spawnHearts(){
+  const wrap = document.getElementById("hearts");
+  if (!wrap) return;
+
+  wrap.innerHTML = "";
+  const count = 18;
+
+  for (let i=0;i<count;i++){
+    const h = document.createElement("div");
+    h.className = "h";
+
+    const left = Math.random() * 100;
+    const size = 14 + Math.random() * 26;
+    const dur = 9 + Math.random() * 10;
+    const delay = Math.random() * 6;
+    const drift = (Math.random() * 80 - 40).toFixed(0) + "px";
+    const alpha = (0.25 + Math.random() * 0.35).toFixed(2);
+
+    h.style.left = left + "vw";
+    h.style.setProperty("--size", size + "px");
+    h.style.setProperty("--a", alpha);
+    h.style.setProperty("--drift", drift);
+    h.style.animationDuration = dur + "s";
+    h.style.animationDelay = delay + "s";
+
+    wrap.appendChild(h);
+  }
+}
+
+function spawnSparkles(){
+  const wrap = document.getElementById("sparkles");
+  if (!wrap) return;
+
+  wrap.innerHTML = "";
+  const count = 26;
+
+  for (let i=0;i<count;i++){
+    const sp = document.createElement("div");
+    sp.className = "sp";
+    sp.style.left = (Math.random() * 100) + "vw";
+    sp.style.top = (Math.random() * 100) + "vh";
+    sp.style.animationDelay = (Math.random() * 3.5) + "s";
+    sp.style.opacity = (0.25 + Math.random() * 0.55).toFixed(2);
+    wrap.appendChild(sp);
+  }
+}
+
+spawnHearts();
+spawnSparkles();
+window.addEventListener("resize", () => {
+  spawnHearts();
+  spawnSparkles();
+});
+
+// =========================
+// 3) GOOGLE APPS SCRIPT WEB APP (YOUR EXEC URL)
+// =========================
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
+// =========================
+// 4) RSVP SUBMIT
+// =========================
 const form = document.getElementById("rsvpForm");
 const statusEl = document.getElementById("status");
 const submitBtn = document.getElementById("submitBtn");
 
-function setStatus(msg, ok=true){
-  statusEl.textContent = msg;
-  statusEl.style.color = ok ? "#2f7a4b" : "#a03a54";
+function setStatus(type, msg){
+  statusEl.className = "status " + (type || "");
+  statusEl.textContent = msg || "";
 }
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault(); // IMPORTANT: stops ?reservationName=... URL
+function heartBurst(x, y){
+  const wrap = document.createElement("div");
+  wrap.className = "burst";
+  wrap.style.setProperty("--x", x + "px");
+  wrap.style.setProperty("--y", y + "px");
 
-  const reservationName = document.getElementById("reservationName").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const adults = document.getElementById("adults").value;
-  const children = document.getElementById("children").value;
-  const attending = document.getElementById("attending").value;
-  const note = document.getElementById("note").value.trim();
-  const message = document.getElementById("message").value.trim();
-
-  if (!reservationName){
-    setStatus("Please enter Reservation Name.", false);
-    return;
-  }
-  if (adults === "" || Number(adults) < 0){
-    setStatus("Please enter Adults count (0 or more).", false);
-    return;
+  const pieces = 10;
+  for (let i=0;i<pieces;i++){
+    const el = document.createElement("i");
+    el.textContent = "♥";
+    const dx = (Math.random()*180 - 90).toFixed(0) + "px";
+    const dy = (Math.random()*160 - 90).toFixed(0) + "px";
+    el.style.setProperty("--dx", dx);
+    el.style.setProperty("--dy", dy);
+    el.style.fontSize = (14 + Math.random()*14).toFixed(0) + "px";
+    wrap.appendChild(el);
   }
 
-  submitBtn.disabled = true;
-  setStatus("Submitting...", true);
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 950);
+}
 
-  const payload = {
-    reservationName,
-    phone,
-    adults: Number(adults),
-    children: children === "" ? "" : Number(children),
-    attending,
-    message,
-    note
-  };
+if (form){
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // IMPORTANT: stops GET submit (your “plain boxes” issue)
 
-  try{
-    // use text/plain to avoid some Apps Script preflight issues
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    });
+    // quick validation
+    const reservationName = document.getElementById("reservationName").value.trim();
+    const adults = document.getElementById("adults").value.trim();
 
-    const text = await res.text();
-    let data = {};
-    try{ data = JSON.parse(text); } catch(_) {}
-
-    if (!res.ok || data.ok === false){
-      throw new Error(data.error || `Request failed (${res.status})`);
+    if (!reservationName || !adults){
+      setStatus("err", "Please enter Reservation Name and Adults count.");
+      return;
     }
 
-    setStatus("Submitted! Thank you. 💖", true);
-    form.reset();
-    document.getElementById("children").value = 0;
+    if (!APPS_SCRIPT_URL || !APPS_SCRIPT_URL.includes("/exec")){
+      setStatus("err", "Apps Script URL not set correctly.");
+      return;
+    }
 
-  }catch(err){
-    setStatus("Submit failed: " + String(err.message || err), false);
-  }finally{
-    submitBtn.disabled = false;
-  }
-});
+    // collect data
+    const payload = {
+      reservationName,
+      phone: document.getElementById("phone").value.trim(),
+      adults: Number(document.getElementById("adults").value || 0),
+      children: Number(document.getElementById("children").value || 0),
+      attending: document.getElementById("attending").value,
+      message: document.getElementById("message").value.trim(),
+      note: document.getElementById("note").value.trim()
+    };
 
-// Floating hearts + sparkles (premium love vibe)
-const heartsRoot = document.getElementById("hearts");
-const sparkRoot = document.getElementById("sparkles");
+    submitBtn.disabled = true;
+    setStatus("", "Submitting...");
 
-function spawnHeart(){
-  const el = document.createElement("div");
-  el.className = "heart";
-  el.textContent = Math.random() < 0.5 ? "♡" : "♥";
+    try {
+      // IMPORTANT: text/plain avoids CORS preflight (works best with Apps Script)
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
 
-  const left = Math.random() * 100;
-  const size = 14 + Math.random() * 22;
-  const dur = 6 + Math.random() * 6;
-  const drift = (Math.random() * 140 - 70) + "px";
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch { data = { ok:false, raw:text }; }
 
-  el.style.left = left + "vw";
-  el.style.bottom = "-10vh";
-  el.style.fontSize = size + "px";
-  el.style.animationDuration = dur + "s";
-  el.style.setProperty("--drift", drift);
+      if (data.ok){
+        const rect = submitBtn.getBoundingClientRect();
+        heartBurst(rect.left + rect.width/2, rect.top + rect.height/2);
 
-  heartsRoot.appendChild(el);
-  setTimeout(() => el.remove(), (dur + 0.5) * 1000);
+        setStatus("ok", "✅ Submitted! Thank you.");
+        form.reset();
+      } else {
+        setStatus("err", "❌ Submit failed. Check Apps Script permissions / deployment.");
+      }
+
+    } catch (err){
+      setStatus("err", "❌ Network error. Try again.");
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
 }
-
-function spawnSpark(){
-  const el = document.createElement("div");
-  el.className = "spark";
-
-  el.style.left = (Math.random() * 100) + "vw";
-  el.style.top  = (Math.random() * 100) + "vh";
-  el.style.animationDuration = (1.8 + Math.random() * 1.6) + "s";
-
-  sparkRoot.appendChild(el);
-  setTimeout(() => el.remove(), 2600);
-}
-
-// steady stream (not too heavy)
-setInterval(spawnHeart, 550);
-setInterval(spawnSpark, 420);
