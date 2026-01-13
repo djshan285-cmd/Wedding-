@@ -74,6 +74,7 @@ body{
   border: 1px solid rgba(255,255,255,0.38);
   box-shadow: 0 18px 70px rgba(0,0,0,0.18);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .topTag{
@@ -103,32 +104,35 @@ body{
   border: 1px solid rgba(194,24,91,0.15);
 }
 
-/* Couple name: gold + purple + rose gradient */
+/* Couple name: smaller, lighter, vibrant gold, different font */
 .names{
   text-align:center;
   margin: 10px 0 0;
   line-height:1.05;
 }
 .name1, .name2{
-  font-family:"Great Vibes", cursive;
-  font-size:78px;
+  font-family:"Cinzel", serif;   /* different font */
+  font-weight:600;              /* lighter */
+  font-size:52px;               /* smaller */
+  letter-spacing:0.02em;
   display:inline-block;
 
-  background: linear-gradient(90deg, var(--gold1), var(--rose), var(--purple1), var(--gold2));
+  /* vibrant gold gradient */
+  background: linear-gradient(90deg, #fff3b0, #f6d365, #ffb703, #f6d365);
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
 
-  filter: drop-shadow(0 10px 26px rgba(123,44,191,0.16));
+  filter: drop-shadow(0 8px 18px rgba(246,211,101,0.22));
 }
 .amp{
-  font-family:Cinzel, serif;
-  font-weight:600;
-  font-size:18px;
-  color: var(--rose);
+  font-family:"Great Vibes", cursive;
+  font-size:22px;
+  color:#ff4d6d;  /* light red */
   display:inline-block;
   margin: 0 10px;
-  transform: translateY(-8px);
+  transform: translateY(-6px);
+  opacity:0.9;
 }
 
 /* Glow line */
@@ -137,7 +141,7 @@ body{
   width:min(520px, 92%);
   margin: 12px auto 12px;
   border-radius:999px;
-  background: linear-gradient(90deg, transparent, rgba(246,211,101,0.9), rgba(194,24,91,0.55), rgba(123,44,191,0.65), transparent);
+  background: linear-gradient(90deg, transparent, rgba(246,211,101,0.9), rgba(255,77,109,0.55), rgba(123,44,191,0.65), transparent);
 }
 
 /* Details */
@@ -181,12 +185,13 @@ body{
   background: rgba(255,255,255,0.62);
   border: 1px solid rgba(255,255,255,0.35);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 .timebox div{
   font-size:34px;
   font-weight:800;
 
-  background: linear-gradient(90deg, var(--gold1), var(--rose), var(--purple1));
+  background: linear-gradient(90deg, #fff3b0, #f6d365, #ffb703, #f6d365);
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -195,17 +200,20 @@ body{
   color:#5c5c5c;
 }
 
-/* Form glass look */
+/* Form glass look (more transparent) */
 .form{
-  background: rgba(255,255,255,0.50);
+  background: rgba(255,255,255,0.18);
   padding: 14px;
   border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.35);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 14px 50px rgba(0,0,0,0.10);
   display:grid;
   gap:10px;
   margin-top:10px;
 }
+
 .row2{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -213,21 +221,27 @@ body{
 }
 @media (max-width:720px){
   .row2{ grid-template-columns: 1fr; }
-  .name1, .name2{ font-size:62px; }
+  .name1, .name2{ font-size:44px; }
 }
 
-/* Inputs */
+/* Inputs also transparent */
 input,select,textarea{
   padding:12px;
   border-radius:14px;
-  border:1px solid rgba(0,0,0,0.12);
+  border:1px solid rgba(255,255,255,0.35);
   font-size:14px;
-  background: rgba(255,255,255,0.72);
+  color:#2b2b2b;
+  background: rgba(255,255,255,0.22);
   outline:none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+input::placeholder, textarea::placeholder{
+  color: rgba(40,40,40,0.65);
 }
 input:focus,select:focus,textarea:focus{
-  border-color: rgba(123,44,191,0.35);
-  box-shadow: 0 0 0 4px rgba(123,44,191,0.10);
+  border-color: rgba(246,211,101,0.55);
+  box-shadow: 0 0 0 4px rgba(246,211,101,0.16);
 }
 textarea{
   min-height: 95px;
@@ -246,7 +260,7 @@ button{
   letter-spacing:0.02em;
   cursor:pointer;
 
-  background: linear-gradient(90deg, var(--purple2), var(--rose), var(--gold1));
+  background: linear-gradient(90deg, var(--purple2), #ff4d6d, #ffb703);
   box-shadow: 0 16px 40px rgba(123,44,191,0.18);
 }
 .btnGlow{
@@ -322,7 +336,7 @@ button:disabled{ opacity:0.7; cursor:not-allowed; }
 .thanksHeart{
   font-size: 70px;
   line-height: 1;
-  background: linear-gradient(90deg, var(--gold1), var(--rose), var(--purple1));
+  background: linear-gradient(90deg, #fff3b0, #ff4d6d, #7b2cbf, #ffb703);
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
