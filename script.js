@@ -1,4 +1,4 @@
-// Wedding date/time
+// Wedding date/time (set as you want)
 const weddingDate = new Date("2026-06-26T19:00:00");
 
 function pad(n){ return String(n).padStart(2,"0"); }
@@ -12,21 +12,20 @@ function updateCountdown(){
   }
 
   const t = Math.floor(diff/1000);
-  const days = Math.floor(t/(3600*24));
+  const days  = Math.floor(t/(3600*24));
   const hours = Math.floor((t%(3600*24))/3600);
-  const mins = Math.floor((t%3600)/60);
-  const secs = t%60;
+  const mins  = Math.floor((t%3600)/60);
+  const secs  = t%60;
 
   document.getElementById("d").textContent = pad(days);
   document.getElementById("h").textContent = pad(hours);
   document.getElementById("m").textContent = pad(mins);
   document.getElementById("s").textContent = pad(secs);
 }
-
 setInterval(updateCountdown,1000);
 updateCountdown();
 
-// ✅ Your Google Apps Script Web App URL (/exec)
+// ✅ Your Google Apps Script Web App URL
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
@@ -67,6 +66,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   try{
+    // no-cors avoids browser blocking (Apps Script response not readable)
     await fetch(APPS_SCRIPT_URL, {
       method:"POST",
       mode:"no-cors",
