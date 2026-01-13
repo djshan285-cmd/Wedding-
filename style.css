@@ -1,250 +1,487 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kannan ❤️ Kohila | Wedding Reception</title>
-
-  <!-- Premium wedding fonts (similar vibe to your reference) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-
-  <!-- Sparkles layer -->
-  <div class="sparkles" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span>
-  </div>
-
-  <main class="card">
-    <div class="topTag">
-      <span class="tag">WEDDING RECEPTION</span>
-      <span class="tag2">Colombo • Sri Lanka</span>
-    </div>
-
-    <h1 class="names">
-      <span class="name">Mr. Kannan</span>
-      <span class="heartAmp">♡</span>
-      <span class="name">Mrs. Kohila</span>
-    </h1>
-
-    <div class="subline">With love & joy, we invite you to celebrate with us.</div>
-
-    <p class="details">
-      <b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall, Colombo
-    </p>
-
-    <div class="countdown">
-      <div class="timebox glass">
-        <div id="d">00</div><small>Days</small>
-      </div>
-      <div class="timebox glass">
-        <div id="h">00</div><small>Hours</small>
-      </div>
-      <div class="timebox glass">
-        <div id="m">00</div><small>Minutes</small>
-      </div>
-      <div class="timebox glass">
-        <div id="s">00</div><small>Seconds</small>
-      </div>
-    </div>
-
-    <h2>Confirm Attendance</h2>
-    <p class="muted">Please submit one response per family/reservation.</p>
-
-    <form id="rsvpForm" class="form glass">
-      <div class="row2">
-        <input name="reservationName" placeholder="Reservation Name *" required />
-        <input name="phone" placeholder="Phone (optional)" />
-      </div>
-
-      <div class="row2">
-        <input type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
-        <select name="attending">
-          <option value="Yes">Yes, we will attend</option>
-          <option value="No">Sorry, cannot attend</option>
-        </select>
-      </div>
-
-      <textarea name="message" placeholder="Message (optional)"></textarea>
-
-      <button id="submitBtn" type="submit">
-        <span class="btnShine" aria-hidden="true"></span>
-        Submit RSVP
-      </button>
-
-      <div id="status" class="status"></div>
-    </form>
-
-    <h2 class="mt">Location</h2>
-    <p class="muted">Tap the map for directions.</p>
-
-    <iframe class="map"
-      src="https://www.google.com/maps?q=Colombo%2C%20Sri%20Lanka&output=embed"
-      loading="lazy"></iframe>
-
-    <div class="footerNote">Made with ♡ for Kannan & Kohila</div>
-  </main>
-
-  <!-- Thank-you popup -->
-  <div id="thanksOverlay" class="thanksOverlay" aria-hidden="true">
-    <div class="thanksCard">
-      <div class="thanksHeart">♡</div>
-      <div class="thanksText">Thank you!</div>
-      <div class="thanksSub">Your RSVP was submitted</div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>/* =========================
-   FIX ALIGNMENT + PREMIUM LOOK
-   (Works with your existing HTML)
-   Paste at the END of style.css
-========================= */
-
-/* Make sure everything is centered */
-.card, .details, .muted, .bless, .subline { text-align: center; }
-
-/* -------------------------
-   NAMES (fix font + center)
-   Your HTML uses .names and likely .name1/.name2/.amp
-------------------------- */
-.names{
-  text-align:center !important;
-  margin: 12px auto 8px !important;
-  line-height: 1.12 !important;
-  padding: 0 8px;
+/* ================================
+   1) IMPORTANT: GISTA DANES FONT
+   Upload the font file to repo:
+   /fonts/GistaDanes.woff2
+   /fonts/GistaDanes.woff
+   (or .ttf)
+================================== */
+@font-face{
+  font-family:"Gista Danes";
+  src:
+    url("./fonts/GistaDanes.woff2") format("woff2"),
+    url("./fonts/GistaDanes.woff") format("woff");
+  font-display: swap;
 }
 
-/* If your HTML uses .name1/.name2 */
-.name1, .name2{
-  font-family: "Alex Brush", cursive !important;
-  font-weight: 400 !important;
-  font-size: 76px !important;
-  letter-spacing: 0.01em !important;
-  display: inline-block !important;
+/* Color vibe: premium love + glass */
+:root{
+  --bg1:#2a0a3d;
+  --bg2:#1b1b3f;
+  --pink:#ff4da6;
+  --purple:#8b5cf6;
+  --mint:#5ef1d8;
+  --gold:#f6d365;
 
-  background: linear-gradient(90deg,#fff3b0,#f6d365,#ffb703,#ff4d6d,#f6d365) !important;
-  -webkit-background-clip:text !important;
-  background-clip:text !important;
-  -webkit-text-fill-color:transparent !important;
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.78);
 
-  filter: drop-shadow(0 16px 30px rgba(0,0,0,0.10)) !important;
+  /* Glass */
+  --glass: rgba(255,255,255,0.14);
+  --border: rgba(255,255,255,0.35);
+  --shadow: rgba(0,0,0,0.28);
 }
 
-/* Heart or & between names */
-.amp, .heartAmp{
-  font-family: "Cinzel", serif !important;
-  font-size: 22px !important;
-  font-weight: 600 !important;
-  color: rgba(255,77,109,0.95) !important;
-  margin: 0 12px !important;
-  display: inline-block !important;
-  transform: translateY(-10px) !important;
-  text-shadow: 0 10px 20px rgba(255,204,102,0.20) !important;
+/* Whole page background like your reference image */
+body{
+  margin:0;
+  font-family:Poppins, Arial;
+  color:var(--text);
+  min-height:100vh;
+
+  /* glassmorphism colorful blobs */
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255,77,166,0.62), transparent 45%),
+    radial-gradient(circle at 88% 24%, rgba(94,241,216,0.55), transparent 48%),
+    radial-gradient(circle at 72% 88%, rgba(246,211,101,0.50), transparent 50%),
+    radial-gradient(circle at 24% 82%, rgba(139,92,246,0.58), transparent 50%),
+    linear-gradient(140deg, var(--bg1), var(--bg2));
+  overflow-x:hidden;
 }
 
-/* Responsive (no overlap) */
-@media (max-width: 900px){
-  .name1, .name2{ font-size: 62px !important; }
+/* soft sparkles */
+.sparkles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+.sparkles span{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(255,255,255,0) 70%);
+  opacity:0;
+  filter: drop-shadow(0 10px 20px rgba(246,211,101,0.28));
+  animation: twinkle 5.4s infinite ease-in-out;
+}
+.sparkles span:nth-child(1){ left:8%;  top:15%; animation-delay:.2s;}
+.sparkles span:nth-child(2){ left:18%; top:55%; animation-delay:1.3s;}
+.sparkles span:nth-child(3){ left:28%; top:30%; animation-delay:2.1s;}
+.sparkles span:nth-child(4){ left:38%; top:75%; animation-delay:.9s;}
+.sparkles span:nth-child(5){ left:48%; top:22%; animation-delay:1.7s;}
+.sparkles span:nth-child(6){ left:58%; top:60%; animation-delay:2.5s;}
+.sparkles span:nth-child(7){ left:68%; top:28%; animation-delay:.6s;}
+.sparkles span:nth-child(8){ left:76%; top:78%; animation-delay:1.4s;}
+.sparkles span:nth-child(9){ left:84%; top:36%; animation-delay:2.9s;}
+.sparkles span:nth-child(10){ left:92%; top:58%; animation-delay:.4s;}
+.sparkles span:nth-child(11){ left:12%; top:84%; animation-delay:3.2s;}
+.sparkles span:nth-child(12){ left:63%; top:10%; animation-delay:3.6s;}
+.sparkles span:nth-child(13){ left:44%; top:10%; animation-delay:2.8s;}
+.sparkles span:nth-child(14){ left:52%; top:90%; animation-delay:1.9s;}
+
+@keyframes twinkle{
+  0%,100%{ transform: scale(.7); opacity:0; }
+  35%{ transform: scale(1.5); opacity:0.95; }
+  55%{ transform: scale(1.0); opacity:0.35; }
+}
+
+/* center wrapper */
+.wrap{
+  position:relative;
+  z-index:1;
+  padding:42px 18px;
+  display:flex;
+  justify-content:center;
+}
+
+/* Main glass card (like your image center card) */
+.glassCard{
+  width:min(980px, 100%);
+  border-radius:24px;
+  padding:26px 22px;
+
+  background: var(--glass);
+  border: 1px solid var(--border);
+
+  backdrop-filter: blur(22px) saturate(170%);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+
+  box-shadow: 0 30px 90px var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+
+/* inner highlight border */
+.glassCard::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:24px;
+  pointer-events:none;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* glass shine sweep */
+.glassCard::after{
+  content:"";
+  position:absolute;
+  inset:-60%;
+  transform: rotate(18deg) translateX(-70%);
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.35),
+    rgba(255,255,255,0));
+  opacity:0.6;
+  animation: shine 7.5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes shine{
+  0%{ transform: rotate(18deg) translateX(-80%); opacity:0; }
+  25%{ opacity:.6; }
+  55%{ transform: rotate(18deg) translateX(80%); opacity:.25; }
+  100%{ transform: rotate(18deg) translateX(80%); opacity:0; }
+}
+
+/* Pills */
+.topPills{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.pill{
+  padding:9px 14px;
+  border-radius:999px;
+  font-size:12px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  font-family:Cinzel, serif;
+}
+.pillGold{
+  background: rgba(246,211,101,0.25);
+  border: 1px solid rgba(246,211,101,0.55);
+}
+.pillSoft{
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.28);
+}
+
+/* Couple name (NO overlap, wraps properly) */
+.couple{
+  text-align:center;
+  margin: 10px auto 6px;
+  line-height:1.05;
+  padding: 0 10px;
+
+  /* Use Gista Danes if uploaded, else fallback */
+  font-family: "Gista Danes", "Cinzel", serif;
+  font-weight: 600;
+
+  font-size: clamp(34px, 5vw, 58px);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.couple .heart{
+  margin: 0 10px;
+  display:inline-block;
+  transform: translateY(-4px);
+  font-size: 0.9em;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 10px 25px rgba(246,211,101,0.25);
+}
+
+/* small text lines */
+.invite{
+  text-align:center;
+  margin: 8px auto 10px;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.meta{
+  text-align:center;
+  margin: 0 auto 16px;
+  color: rgba(255,255,255,0.86);
+  font-size: 14px;
+}
+
+/* Countdown row */
+.countRow{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin: 10px 0 14px;
+}
+
+/* Glass boxes for countdown + form inputs */
+.glassBox{
+  width: 140px;
+  text-align:center;
+  padding: 16px 14px;
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow:
+    0 18px 60px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+  position:relative;
+  overflow:hidden;
+}
+
+/* inner gloss highlight */
+.glassBox::before{
+  content:"";
+  position:absolute;
+  inset:-60%;
+  transform: rotate(18deg) translateX(-65%);
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.30),
+    rgba(255,255,255,0));
+  opacity:0.55;
+  animation: shine 8s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.num{
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(246,211,101,0.95));
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.lbl{
+  margin-top:4px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.82);
+}
+
+/* Glow hover effect for countdown boxes */
+.glowHover{
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.glowHover:hover{
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.55);
+  box-shadow:
+    0 26px 85px rgba(0,0,0,0.22),
+    0 0 0 6px rgba(246,211,101,0.10),
+    0 0 55px rgba(255,77,166,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+/* Divider */
+.divider{
+  height:1px;
+  width:min(820px, 92%);
+  margin: 16px auto;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+}
+
+/* Section title */
+.sectionTitle{
+  margin: 10px 0 6px;
+  font-size: 22px;
+}
+.hint{
+  margin: 0 0 12px;
+  color: rgba(255,255,255,0.78);
+  font-size: 13px;
+}
+
+/* Form glass */
+.glassForm{
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    0 18px 70px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+  position:relative;
+  overflow:hidden;
+}
+.glassForm::before{
+  content:"";
+  position:absolute;
+  inset:-60%;
+  transform: rotate(18deg) translateX(-70%);
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.28),
+    rgba(255,255,255,0));
+  opacity:0.55;
+  animation: shine 8.5s ease-in-out infinite;
+  pointer-events:none;
+}
+
+/* Form grid */
+.grid2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
 }
 @media (max-width: 720px){
-  .name1, .name2{ font-size: 48px !important; display:block !important; }
-  .amp, .heartAmp{ display:block !important; transform:none !important; margin:6px 0 !important; }
+  .grid2{ grid-template-columns: 1fr; }
+  .glassBox{ width: 42vw; min-width: 140px; }
 }
 
-/* -------------------------
-   QUOTE LINE (the one you circled)
-   If your HTML uses .bless or .subline
-------------------------- */
-.subline, .bless{
-  max-width: 780px !important;
-  margin: 10px auto 14px !important;
-  padding: 12px 14px !important;
-  border-radius: 18px !important;
-  background: rgba(255,255,255,0.40) !important;
-  border: 1px solid rgba(255,255,255,0.65) !important;
-  backdrop-filter: blur(18px) saturate(160%) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
-}
+/* Inputs same glass style */
+.glassInput{
+  width:100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.40);
+  background: rgba(255,255,255,0.10);
 
-/* -------------------------
-   GLASS STYLE (transparent outline like your ref image #3)
-------------------------- */
-.glass, .form, .timebox{
-  position: relative !important;
-  overflow: hidden !important;
-  background: rgba(255,255,255,0.12) !important;
-  border: 1px solid rgba(255,255,255,0.65) !important;
-  backdrop-filter: blur(24px) saturate(170%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(170%) !important;
+  color: rgba(255,255,255,0.92);
+  font-size: 14px;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
   box-shadow:
-    0 26px 70px rgba(0,0,0,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.55),
-    inset 0 -20px 38px rgba(0,0,0,0.06) !important;
+    0 12px 30px rgba(0,0,0,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.30);
+  outline:none;
+}
+.glassInput::placeholder{ color: rgba(255,255,255,0.70); }
+.glassInput:focus{
+  border-color: rgba(246,211,101,0.70);
+  box-shadow:
+    0 0 0 5px rgba(246,211,101,0.12),
+    0 12px 30px rgba(0,0,0,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.30);
 }
 
-/* Glass shine layer */
-.glass::before, .form::before, .timebox::before{
-  content:"" !important;
-  position:absolute !important;
-  inset:-50% !important;
-  transform: rotate(18deg) translateX(-60%) !important;
+/* textarea */
+.glassArea{
+  margin-top:10px;
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Button same glass style */
+.glassButton{
+  margin-top:12px;
+  width:100%;
+  padding: 14px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.35);
+
+  background: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.95);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor:pointer;
+
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+
+  box-shadow:
+    0 18px 60px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.30);
+  position:relative;
+  overflow:hidden;
+
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.glassButton:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.55);
+  box-shadow:
+    0 26px 85px rgba(0,0,0,0.22),
+    0 0 0 6px rgba(94,241,216,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.30);
+}
+.glassButton:disabled{ opacity:.65; cursor:not-allowed; }
+
+/* Button shine */
+.btnShine{
+  content:"";
+  position:absolute;
+  inset:-60%;
+  transform: rotate(18deg) translateX(-75%);
   background: linear-gradient(90deg,
-    rgba(255,255,255,0.00),
+    rgba(255,255,255,0),
     rgba(255,255,255,0.40),
-    rgba(255,255,255,0.00)) !important;
-  opacity:0.55 !important;
-  animation: glassShineFix 7s ease-in-out infinite !important;
-  pointer-events:none !important;
-}
-@keyframes glassShineFix{
-  0%{ transform: rotate(18deg) translateX(-70%); opacity:0; }
-  25%{ opacity:0.55; }
-  55%{ transform: rotate(18deg) translateX(70%); opacity:0.25; }
-  100%{ transform: rotate(18deg) translateX(70%); opacity:0; }
+    rgba(255,255,255,0));
+  opacity:0.55;
+  animation: shine 5.6s ease-in-out infinite;
+  pointer-events:none;
 }
 
-/* -------------------------
-   COUNTDOWN BOXES GLOW HOVER
-------------------------- */
-.timebox{
-  border-radius: 22px !important;
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease !important;
-}
-.timebox:hover{
-  transform: translateY(-4px) !important;
-  border-color: rgba(255,204,102,0.95) !important;
-  box-shadow:
-    0 34px 95px rgba(0,0,0,0.14),
-    0 0 0 6px rgba(255,204,102,0.16),
-    0 0 55px rgba(255,77,109,0.16),
-    inset 0 1px 0 rgba(255,255,255,0.55) !important;
+/* Status text */
+.status{
+  margin-top:10px;
+  min-height:18px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.82);
 }
 
-/* -------------------------
-   FORM INPUTS MORE GLASS
-------------------------- */
-input,select,textarea{
-  background: rgba(255,255,255,0.10) !important;
-  border: 1px solid rgba(255,255,255,0.70) !important;
-  backdrop-filter: blur(18px) saturate(160%) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
-  box-shadow:
-    0 12px 28px rgba(0,0,0,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.50) !important;
-}
-input:focus,select:focus,textarea:focus{
-  border-color: rgba(255,204,102,0.95) !important;
-  box-shadow:
-    0 0 0 5px rgba(255,204,102,0.14),
-    0 12px 28px rgba(0,0,0,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.50) !important;
+/* Map */
+.mt{ margin-top:18px; }
+.map{
+  width:100%;
+  height:340px;
+  border:0;
+  border-radius: 18px;
+  box-shadow: 0 18px 70px rgba(0,0,0,0.22);
+  margin-top:10px;
 }
 
+/* Footer */
+.footer{
+  text-align:center;
+  margin-top:14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.70);
+}
+
+/* Thank you overlay */
+.thanksOverlay{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.45);
+  z-index:9999;
+}
+.thanksOverlay.show{ display:flex; }
+
+.thanksCard{
+  width: min(380px, 92vw);
+  border-radius: 20px;
+  padding: 22px 18px;
+  text-align:center;
+
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(22px) saturate(170%);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+}
+.thanksHeart{
+  font-size: 70px;
+  margin-bottom:6px;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 18px 40px rgba(255,77,166,0.18);
+  animation: beat 900ms ease-in-out infinite;
+}
+@keyframes beat{
+  0%,100%{ transform: scale(1); }
+  50%{ transform: scale(1.15); }
+}
+.thanksText{ font-weight: 900; font-size: 22px; }
+.thanksSub{ margin-top: 6px; font-size: 13px; color: rgba(255,255,255,0.80); }
