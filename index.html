@@ -78,11 +78,16 @@
         </div>
 
         <div class="row2">
-          <input class="in" type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
+          <input class="in" type="number" name="adults" placeholder="Adults count *" min="1" max="50" required />
+          <input class="in" type="number" name="children" placeholder="Children count (optional)" min="0" max="50" value="0" />
+        </div>
+
+        <div class="row2">
           <select class="in" name="attending">
             <option value="Yes">Yes, we will attend</option>
             <option value="No">Sorry, cannot attend</option>
           </select>
+          <input class="in" name="messageShort" placeholder="Any note (optional)" />
         </div>
 
         <textarea class="in area" name="message" placeholder="Message (optional)"></textarea>
