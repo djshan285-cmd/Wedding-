@@ -2,93 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kannan ❤️ Kohila | Wedding Reception</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mr. Kannan ♡ Mrs. Kohila — Wedding Reception</title>
 
-  <!-- Premium wedding fonts (similar vibe to your reference) -->
+  <!-- Base fonts (fallback if Gista Danes not uploaded yet) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css" />
+  <!-- ✅ Your files (MUST be exactly these names) -->
+  <link rel="stylesheet" href="./style.css" />
 </head>
-<body>
 
-  <!-- Sparkles layer -->
+<body>
+  <!-- soft sparkles -->
   <div class="sparkles" aria-hidden="true">
     <span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span>
+    <span></span><span></span><span></span><span></span>
   </div>
 
-  <main class="card">
-    <div class="topTag">
-      <span class="tag">WEDDING RECEPTION</span>
-      <span class="tag2">Colombo • Sri Lanka</span>
-    </div>
+  <main class="wrap">
+    <section class="glassCard">
 
-    <h1 class="names">
-      <span class="name">Mr. Kannan</span>
-      <span class="heartAmp">♡</span>
-      <span class="name">Mrs. Kohila</span>
-    </h1>
-
-    <div class="subline">With love & joy, we invite you to celebrate with us.</div>
-
-    <p class="details">
-      <b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall, Colombo
-    </p>
-
-    <div class="countdown">
-      <div class="timebox glass">
-        <div id="d">00</div><small>Days</small>
-      </div>
-      <div class="timebox glass">
-        <div id="h">00</div><small>Hours</small>
-      </div>
-      <div class="timebox glass">
-        <div id="m">00</div><small>Minutes</small>
-      </div>
-      <div class="timebox glass">
-        <div id="s">00</div><small>Seconds</small>
-      </div>
-    </div>
-
-    <h2>Confirm Attendance</h2>
-    <p class="muted">Please submit one response per family/reservation.</p>
-
-    <form id="rsvpForm" class="form glass">
-      <div class="row2">
-        <input name="reservationName" placeholder="Reservation Name *" required />
-        <input name="phone" placeholder="Phone (optional)" />
+      <div class="topPills">
+        <span class="pill pillGold">WEDDING RECEPTION</span>
+        <span class="pill pillSoft">Colombo • Sri Lanka</span>
       </div>
 
-      <div class="row2">
-        <input type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
-        <select name="attending">
-          <option value="Yes">Yes, we will attend</option>
-          <option value="No">Sorry, cannot attend</option>
-        </select>
+      <!-- ✅ Names (won't overlap: it wraps nicely) -->
+      <h1 class="couple">
+        <span class="n1">Mr. Kannan</span>
+        <span class="heart">♡</span>
+        <span class="n2">Mrs. Kohila</span>
+      </h1>
+
+      <p class="invite">
+        With love & joy, we invite you to celebrate with us.
+      </p>
+
+      <p class="meta">
+        <b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall, Colombo
+      </p>
+
+      <!-- Countdown -->
+      <div class="countRow">
+        <div class="glassBox glowHover">
+          <div id="d" class="num">00</div>
+          <div class="lbl">Days</div>
+        </div>
+        <div class="glassBox glowHover">
+          <div id="h" class="num">00</div>
+          <div class="lbl">Hours</div>
+        </div>
+        <div class="glassBox glowHover">
+          <div id="m" class="num">00</div>
+          <div class="lbl">Minutes</div>
+        </div>
+        <div class="glassBox glowHover">
+          <div id="s" class="num">00</div>
+          <div class="lbl">Seconds</div>
+        </div>
       </div>
 
-      <textarea name="message" placeholder="Message (optional)"></textarea>
+      <div class="divider"></div>
 
-      <button id="submitBtn" type="submit">
-        <span class="btnShine" aria-hidden="true"></span>
-        Submit RSVP
-      </button>
+      <h2 class="sectionTitle">Confirm Attendance</h2>
+      <p class="hint">Please submit one response per family/reservation.</p>
 
-      <div id="status" class="status"></div>
-    </form>
+      <!-- RSVP Form -->
+      <form id="rsvpForm" class="glassForm">
+        <div class="grid2">
+          <input class="glassInput" name="reservationName" placeholder="Reservation Name *" required />
+          <input class="glassInput" name="phone" placeholder="Phone (optional)" />
+        </div>
 
-    <h2 class="mt">Location</h2>
-    <p class="muted">Tap the map for directions.</p>
+        <div class="grid2">
+          <input class="glassInput" type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
+          <select class="glassInput" name="attending">
+            <option value="Yes">Yes, we will attend</option>
+            <option value="No">Sorry, cannot attend</option>
+          </select>
+        </div>
 
-    <iframe class="map"
-      src="https://www.google.com/maps?q=Colombo%2C%20Sri%20Lanka&output=embed"
-      loading="lazy"></iframe>
+        <textarea class="glassInput glassArea" name="message" placeholder="Message (optional)"></textarea>
 
-    <div class="footerNote">Made with ♡ for Kannan & Kohila</div>
+        <button id="submitBtn" class="glassButton" type="submit">
+          <span class="btnShine" aria-hidden="true"></span>
+          Submit RSVP
+        </button>
+
+        <div id="status" class="status"></div>
+      </form>
+
+      <h2 class="sectionTitle mt">Location</h2>
+      <p class="hint">Tap the map for directions.</p>
+
+      <iframe class="map"
+        src="https://www.google.com/maps?q=Colombo%2C%20Sri%20Lanka&output=embed"
+        loading="lazy"></iframe>
+
+      <div class="footer">Made with ♡ for Kannan & Kohila</div>
+    </section>
   </main>
 
   <!-- Thank-you popup -->
@@ -100,6 +115,6 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
