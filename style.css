@@ -1,7 +1,7 @@
 @font-face{
-  font-family: "GistaDanes";
+  font-family: "GistaDanes", serif !important;
   src: url("fonts/GistaDanes.woff2") format("woff2");
-  font-weight: 400;
+  font-weight: 400 !important;
   font-style: normal;
   font-display: swap;
 }
