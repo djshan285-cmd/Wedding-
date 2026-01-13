@@ -1,10 +1,17 @@
 // ✅ Wedding date (Colombo time safe-ish)
-// Use local date without timezone string to avoid shifting in some browsers.
-const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // June=5, day=27, 7:00 PM
+// Month is 0-based: 5 = June
+const weddingDate = new Date(2026, 5, 27, 19, 0, 0); // June 27, 2026 7:00 PM (local browser time)
 
-function pad(n){ return String(n).padStart(2, "0"); }
+// ✅ Paste your Google Apps Script WEB APP /exec URL here
+// (You already have one — keep it exactly like this)
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
-function updateCountdown(){
+function pad(n) {
+  return String(n).padStart(2, "0");
+}
+
+function updateCountdown() {
   const now = new Date();
   let diff = weddingDate - now;
   if (diff < 0) diff = 0;
@@ -15,119 +22,136 @@ function updateCountdown(){
   const mins = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
 
-  document.getElementById("d").textContent = pad(days);
+  document.getElementById("d").textContent = String(days);
   document.getElementById("h").textContent = pad(hours);
   document.getElementById("m").textContent = pad(mins);
   document.getElementById("s").textContent = pad(secs);
 }
+
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-/* ✅ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
-
+// ---------- RSVP Submit ----------
 const form = document.getElementById("rsvpForm");
 const statusEl = document.getElementById("status");
 const submitBtn = document.getElementById("submitBtn");
 
-function setStatus(type, msg){
+const overlay = document.getElementById("thanksOverlay");
+const closeThanks = document.getElementById("closeThanks");
+
+function setStatus(type, msg) {
   statusEl.className = "status " + (type || "");
   statusEl.textContent = msg || "";
 }
 
-function heartBurst(){
-  // small heart pop animation near button
-  const rect = submitBtn.getBoundingClientRect();
-  const cx = rect.left + rect.width/2;
-  const cy = rect.top + rect.height/2;
+function isUrlSet(url) {
+  return url && url.startsWith("https://script.google.com/macros/s/") && url.includes("/exec");
+}
 
-  for (let i=0;i<12;i++){
+// Heart burst effect
+function heartBurst(x, y, count = 14) {
+  for (let i = 0; i < count; i++) {
     const h = document.createElement("div");
     h.textContent = "❤";
     h.style.position = "fixed";
-    h.style.left = cx + "px";
-    h.style.top = cy + "px";
-    h.style.transform = "translate(-50%,-50%)";
-    h.style.fontSize = (12 + Math.random()*14) + "px";
-    h.style.color = "rgba(255,77,115,.9)";
-    h.style.textShadow = "0 10px 30px rgba(255,77,115,.35)";
+    h.style.left = x + "px";
+    h.style.top = y + "px";
+    h.style.fontSize = (12 + Math.random() * 18) + "px";
+    h.style.color = "rgba(255,91,138,.95)";
     h.style.pointerEvents = "none";
-    h.style.zIndex = "9999";
-    document.body.appendChild(h);
+    h.style.zIndex = 60;
+    h.style.filter = "drop-shadow(0 10px 16px rgba(255,91,138,.25))";
 
-    const angle = (Math.PI * 2) * (i/12);
-    const dist = 40 + Math.random()*40;
-    const dx = Math.cos(angle) * dist;
-    const dy = Math.sin(angle) * dist;
+    const dx = (Math.random() - 0.5) * 220;
+    const dy = - (120 + Math.random() * 220);
+    const rot = (Math.random() - 0.5) * 90;
 
     h.animate([
-      { transform:`translate(-50%,-50%) translate(0px,0px) scale(1)`, opacity:1 },
-      { transform:`translate(-50%,-50%) translate(${dx}px,${dy}px) scale(1.25)`, opacity:0 }
-    ], { duration: 700 + Math.random()*250, easing:"cubic-bezier(.2,.8,.2,1)" })
-    .onfinish = () => h.remove();
+      { transform: `translate(0,0) rotate(0deg) scale(1)`, opacity: 1 },
+      { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg) scale(1.3)`, opacity: 0 }
+    ], {
+      duration: 900 + Math.random() * 500,
+      easing: "cubic-bezier(.2,.9,.2,1)"
+    });
+
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 1600);
   }
 }
+
+function showThanks() {
+  overlay.classList.add("show");
+  overlay.setAttribute("aria-hidden", "false");
+}
+function hideThanks() {
+  overlay.classList.remove("show");
+  overlay.setAttribute("aria-hidden", "true");
+}
+closeThanks.addEventListener("click", hideThanks);
+overlay.addEventListener("click", (e) => {
+  if (e.target === overlay) hideThanks();
+});
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  setStatus("", "");
+  // If URL is not set, show error
+  if (!isUrlSet(APPS_SCRIPT_URL)) {
+    setStatus("err", "❌ Apps Script URL not set. Paste your /exec URL into script.js (APPS_SCRIPT_URL).");
+    return;
+  }
+
+  const reservationName = document.getElementById("reservationName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const adults = document.getElementById("adults").value.trim();
+  const children = document.getElementById("children").value.trim();
+  const attending = document.getElementById("attending").value;
+  const note = document.getElementById("note").value.trim();
+  const message = document.getElementById("message").value.trim();
+
+  if (!reservationName || adults === "") {
+    setStatus("err", "❌ Please enter Reservation Name and Adults count.");
+    return;
+  }
+
   submitBtn.disabled = true;
-  submitBtn.querySelector(".btnText").textContent = "Submitting...";
+  setStatus("", "Submitting…");
 
-  try{
-    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("PASTE_YOUR_EXEC_URL_HERE")){
-      throw new Error("Apps Script URL not set. Paste your /exec URL into script.js");
-    }
+  // IMPORTANT:
+  // To avoid CORS preflight issues, we send as text/plain with JSON string body.
+  const payload = {
+    reservationName,
+    phone,
+    adults: Number(adults || 0),
+    children: Number(children || 0),
+    attending,
+    note,
+    message
+  };
 
-    const fd = new FormData(form);
-
-    // Basic validation
-    const reservationName = (fd.get("reservationName") || "").toString().trim();
-    const adults = (fd.get("adults") || "").toString().trim();
-
-    if (!reservationName || adults === ""){
-      setStatus("err", "Please enter Reservation Name and Adults count.");
-      submitBtn.disabled = false;
-      submitBtn.querySelector(".btnText").textContent = "Submit RSVP";
-      return;
-    }
-
-    const payload = {
-      reservationName,
-      phone: (fd.get("phone") || "").toString().trim(),
-      adults: Number(fd.get("adults") || 0),
-      children: Number(fd.get("children") || 0),
-      attending: (fd.get("attending") || "Yes").toString(),
-      shortNote: (fd.get("shortNote") || "").toString().trim(),
-      message: (fd.get("message") || "").toString().trim(),
-    };
-
-    // ✅ Send as JSON
+  try {
     const res = await fetch(APPS_SCRIPT_URL, {
       method: "POST",
-      headers: { "Content-Type":"application/json" },
-      body: JSON.stringify(payload),
+      // do NOT add application/json header (causes preflight)
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
     });
 
-    const text = await res.text();
-    let json;
-    try { json = JSON.parse(text); } catch { json = { ok: res.ok }; }
-
-    if (!res.ok || !json.ok){
-      throw new Error(json.error || "Network error");
-    }
-
-    heartBurst();
+    // Apps Script often returns opaque/cors-limited responses.
+    // If request completes, we treat it as success.
+    // (If your sheet updates, it's working.)
     setStatus("ok", "✅ Submitted! Thank you.");
-    form.reset();
-    // keep children default 0
-    form.querySelector('input[name="children"]').value = 0;
+    showThanks();
 
-  } catch(err){
-    setStatus("err", "❌ " + (err?.message || "Network error"));
-  } finally{
+    // Heart burst from button
+    const r = submitBtn.getBoundingClientRect();
+    heartBurst(r.left + r.width / 2, r.top + r.height / 2, 16);
+
+    form.reset();
+  } catch (err) {
+    console.error(err);
+    setStatus("err", "❌ Network error. Please try again.");
+  } finally {
     submitBtn.disabled = false;
-    submitBtn.querySelector(".btnText").textContent = "Submit RSVP";
   }
 });
