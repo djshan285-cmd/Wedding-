@@ -5,53 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kannan ❤️ Kohila | Wedding Reception</title>
 
+  <!-- Premium wedding fonts (similar vibe to your reference) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Floating hearts (pure CSS animation) -->
-  <div class="hearts" aria-hidden="true">
-    <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
-    <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
+  <!-- Sparkles layer -->
+  <div class="sparkles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span>
   </div>
 
   <main class="card">
     <div class="topTag">
-      <span class="tag">Wedding Reception</span>
+      <span class="tag">WEDDING RECEPTION</span>
       <span class="tag2">Colombo • Sri Lanka</span>
     </div>
 
     <h1 class="names">
-      <span class="name1">Mr. Kannan</span>
-      <span class="amp">&</span>
-      <span class="name2">Mrs. Kohila</span>
+      <span class="name">Mr. Kannan</span>
+      <span class="heartAmp">♡</span>
+      <span class="name">Mrs. Kohila</span>
     </h1>
 
-    <div class="lineGlow"></div>
+    <div class="subline">With love & joy, we invite you to celebrate with us.</div>
 
     <p class="details">
       <b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall, Colombo
     </p>
 
     <div class="countdown">
-      <div class="timebox"><div id="d">00</div><small>Days</small></div>
-      <div class="timebox"><div id="h">00</div><small>Hours</small></div>
-      <div class="timebox"><div id="m">00</div><small>Minutes</small></div>
-      <div class="timebox"><div id="s">00</div><small>Seconds</small></div>
-    </div>
-
-    <div class="bless">
-      “With love in our hearts and joy in our smiles, we invite you to celebrate with us.”
+      <div class="timebox glass">
+        <div id="d">00</div><small>Days</small>
+      </div>
+      <div class="timebox glass">
+        <div id="h">00</div><small>Hours</small>
+      </div>
+      <div class="timebox glass">
+        <div id="m">00</div><small>Minutes</small>
+      </div>
+      <div class="timebox glass">
+        <div id="s">00</div><small>Seconds</small>
+      </div>
     </div>
 
     <h2>Confirm Attendance</h2>
     <p class="muted">Please submit one response per family/reservation.</p>
 
-    <form id="rsvpForm" class="form">
+    <form id="rsvpForm" class="form glass">
       <div class="row2">
         <input name="reservationName" placeholder="Reservation Name *" required />
         <input name="phone" placeholder="Phone (optional)" />
@@ -68,14 +74,13 @@
       <textarea name="message" placeholder="Message (optional)"></textarea>
 
       <button id="submitBtn" type="submit">
-        <span class="btnGlow"></span>
+        <span class="btnShine" aria-hidden="true"></span>
         Submit RSVP
       </button>
 
       <div id="status" class="status"></div>
     </form>
 
-    <!-- Map at bottom -->
     <h2 class="mt">Location</h2>
     <p class="muted">Tap the map for directions.</p>
 
@@ -83,15 +88,13 @@
       src="https://www.google.com/maps?q=Colombo%2C%20Sri%20Lanka&output=embed"
       loading="lazy"></iframe>
 
-    <div class="footerNote">
-      Made with ❤ for Kannan & Kohila
-    </div>
+    <div class="footerNote">Made with ♡ for Kannan & Kohila</div>
   </main>
 
   <!-- Thank-you popup -->
   <div id="thanksOverlay" class="thanksOverlay" aria-hidden="true">
     <div class="thanksCard">
-      <div class="thanksHeart">❤</div>
+      <div class="thanksHeart">♡</div>
       <div class="thanksText">Thank you!</div>
       <div class="thanksSub">Your RSVP was submitted</div>
     </div>
