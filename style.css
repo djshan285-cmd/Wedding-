@@ -9,8 +9,10 @@
   font-family:"Gista Danes";
   src:
     url("./fonts/GistaDanes.woff2") format("woff2"),
-    url("./fonts/GistaDanes.woff") format("woff");
+    url("./fonts/Gista%20Danes.ttf") format("truetype"),
+    url("./fonts/Gista%20Danes.otf") format("opentype");
   font-display: swap;
+}
 }
 
 /* Color vibe: premium love + glass */
