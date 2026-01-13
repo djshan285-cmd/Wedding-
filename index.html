@@ -7,16 +7,31 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <main class="card">
-    <div class="subtitle">Wedding Reception</div>
+  <!-- Floating hearts (pure CSS animation) -->
+  <div class="hearts" aria-hidden="true">
+    <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
+    <span>❤</span><span>❤</span><span>❤</span><span>❤</span><span>❤</span>
+  </div>
 
-    <h1 class="names">Mr. Kannan <span class="and">&</span> Mrs. Kohila</h1>
+  <main class="card">
+    <div class="topTag">
+      <span class="tag">Wedding Reception</span>
+      <span class="tag2">Colombo • Sri Lanka</span>
+    </div>
+
+    <h1 class="names">
+      <span class="name1">Mr. Kannan</span>
+      <span class="amp">&</span>
+      <span class="name2">Mrs. Kohila</span>
+    </h1>
+
+    <div class="lineGlow"></div>
 
     <p class="details">
       <b>Date:</b> June 26, 2026 • <b>Venue:</b> XXXXX Wedding Hall, Colombo
@@ -29,32 +44,48 @@
       <div class="timebox"><div id="s">00</div><small>Seconds</small></div>
     </div>
 
-    <h2>Location</h2>
+    <div class="bless">
+      “With love in our hearts and joy in our smiles, we invite you to celebrate with us.”
+    </div>
+
+    <h2>Confirm Attendance</h2>
+    <p class="muted">Please submit one response per family/reservation.</p>
+
+    <form id="rsvpForm" class="form">
+      <div class="row2">
+        <input name="reservationName" placeholder="Reservation Name *" required />
+        <input name="phone" placeholder="Phone (optional)" />
+      </div>
+
+      <div class="row2">
+        <input type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
+        <select name="attending">
+          <option value="Yes">Yes, we will attend</option>
+          <option value="No">Sorry, cannot attend</option>
+        </select>
+      </div>
+
+      <textarea name="message" placeholder="Message (optional)"></textarea>
+
+      <button id="submitBtn" type="submit">
+        <span class="btnGlow"></span>
+        Submit RSVP
+      </button>
+
+      <div id="status" class="status"></div>
+    </form>
+
+    <!-- Map at bottom -->
+    <h2 class="mt">Location</h2>
     <p class="muted">Tap the map for directions.</p>
 
     <iframe class="map"
       src="https://www.google.com/maps?q=Colombo%2C%20Sri%20Lanka&output=embed"
       loading="lazy"></iframe>
 
-    <h2>Confirm Attendance</h2>
-    <p class="muted">Please submit one response per family/reservation.</p>
-
-    <form id="rsvpForm" class="form">
-      <input name="reservationName" placeholder="Reservation Name *" required />
-      <input name="phone" placeholder="Phone (optional)" />
-
-      <input type="number" name="familyCount" placeholder="How many will attend? *" min="1" max="50" required />
-
-      <select name="attending">
-        <option value="Yes">Yes, we will attend</option>
-        <option value="No">Sorry, cannot attend</option>
-      </select>
-
-      <textarea name="message" placeholder="Message (optional)"></textarea>
-
-      <button id="submitBtn" type="submit">Submit RSVP</button>
-      <div id="status" class="status"></div>
-    </form>
+    <div class="footerNote">
+      Made with ❤ for Kannan & Kohila
+    </div>
   </main>
 
   <!-- Thank-you popup -->
