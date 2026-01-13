@@ -310,3 +310,16 @@ textarea{ resize: vertical; min-height: 120px; }
   .card{ padding: 26px 16px 18px; }
   .grid2{ grid-template-columns: 1fr; }
 }
+/* ✅ Hide the small headings/labels above inputs inside the RSVP form */
+#rsvpForm label,
+#rsvpForm .label,
+#rsvpForm .field-label,
+#rsvpForm .form-label,
+#rsvpForm .input-label,
+#rsvpForm .field > span:first-child,
+#rsvpForm .field > p:first-child {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
