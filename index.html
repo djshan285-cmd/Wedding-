@@ -75,14 +75,18 @@
         <input class="inp" name="phone" placeholder="Phone (optional)" inputmode="tel" />
 
         <!-- dropdown numbers -->
-        <select class="inp" name="adults" required>
-          <option value="" disabled selected>Adults count *</option>
-          <option>0</option><option>1</option><option>2</option><option>3<
+        <select id="adults" name="adults" class="field" required>
+          <option value="" selected disabled>Adults count *</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
         </select>
 
-        <select class="inp" name="children">
-          <option value="" disabled selected>Children count</option>
-          <option>0</option><option>1</option><option>2</option><option>3</option><option>4<
+        <select id="children" name="children" class="field" required>
+          <option value="" selected disabled>Children count *</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
         </select>
 
         <select class="inp" name="attending" required>
