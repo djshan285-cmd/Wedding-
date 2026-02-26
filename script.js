@@ -7,7 +7,7 @@ const APPS_SCRIPT_URL =
 const weddingDate = new Date(2026, 5, 20, 16, 0, 0);
 
 // Map pin
-const PIN = { lat: 6.904917, lng: 79.908601 };
+const PIN = { lat: 6.9058071, lng: 79.9117206 };
 const SL_CENTER = { lat: 7.8731, lng: 80.7718 }; // Sri Lanka center
 
 // ====== HELPERS ======
