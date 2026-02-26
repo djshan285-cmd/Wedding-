@@ -4,11 +4,11 @@
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
-// Wedding date: June is month 5 (0-based)
-const weddingDate = new Date(2026, 5, 27, 19, 0, 0);
+// Event date: June is month 5 (0-based). 4:00 PM start.
+const weddingDate = new Date(2026, 5, 20, 16, 0, 0);
 
-// Map pin (Paradise Inn Bolgoda) — you can fine-tune later if needed
-const PIN = { lat: 6.7879, lng: 79.9026 };
+// Map pin (Waters Edge - Rajagiriya) — you can fine-tune later if needed
+const PIN = { lat: 6.904917, lng: 79.908601 };
 const SL_CENTER = { lat: 7.8731, lng: 80.7718 }; // Sri Lanka center
 
 // ====== HELPERS ======
@@ -84,7 +84,7 @@ function spawnHeart(){
 }
 
 // start with some hearts already visible
-for(let i=0;i<18;i++){
+for(let i=0;i<18;i++){ 
   setTimeout(spawnHeart, i * 220);
 }
 // continuous
@@ -101,7 +101,7 @@ function burstHearts(){
   const parent = form;
   const rect = parent.getBoundingClientRect();
 
-  for(let i=0;i<14;i++){
+  for(let i=0;i<14;i++){ 
     const b = document.createElement("div");
     b.className = "burstHeart";
     b.textContent = ["♥","💗","💕","💖"][Math.floor(Math.random()*4)];
@@ -168,7 +168,7 @@ function initMap(){
   }).addTo(map);
 
   const marker = L.marker([PIN.lat, PIN.lng]).addTo(map);
-  marker.bindPopup("<b>Paradise Inn Bolgoda</b><br/>Pinned venue").openPopup();
+  marker.bindPopup("<b>Waters Edge</b><br/>Rajagiriya<br/>4:00 PM – 10:00 PM").openPopup();
 }
 initMap();
 
