@@ -1,13 +1,12 @@
 // ====== SETTINGS ======
 
-// Your Apps Script URL (same one you used)
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
 // Event date: June is month 5 (0-based). 4:00 PM start.
 const weddingDate = new Date(2026, 5, 27, 16, 0, 0);
 
-// Map pin (Waters Edge - Rajagiriya) — you can fine-tune later if needed
+// Map pin
 const PIN = { lat: 6.904917, lng: 79.908601 };
 const SL_CENTER = { lat: 7.8731, lng: 80.7718 }; // Sri Lanka center
 
@@ -27,10 +26,10 @@ const ids = {
 const last = { d:null, h:null, m:null, s:null };
 
 function setTick(el, value, key){
+  if (!el) return;
   if (last[key] !== value){
     el.textContent = value;
     el.classList.remove("tick");
-    // force reflow
     void el.offsetWidth;
     el.classList.add("tick");
     last[key] = value;
@@ -57,25 +56,26 @@ function updateCountdown(){
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// ====== BACKGROUND HEARTS (more visible + more frequent) ======
+// ====== BACKGROUND HEARTS ======
 const heartsHost = document.querySelector(".bgHearts");
 
 function spawnHeart(){
+  if (!heartsHost) return;
+
   const h = document.createElement("div");
   h.className = "heart";
   const icons = ["♥","♡","💕","💗","💖"];
   h.textContent = icons[Math.floor(Math.random() * icons.length)];
 
-  const left = Math.random() * 100;             // vw
-  const size = 14 + Math.random() * 18;         // px
-  const duration = 8 + Math.random() * 9;       // sec
+  const left = Math.random() * 100;
+  const size = 14 + Math.random() * 18;
+  const duration = 8 + Math.random() * 9;
 
   h.style.left = left + "vw";
   h.style.bottom = (-10) + "vh";
   h.style.fontSize = size + "px";
   h.style.animationDuration = duration + "s";
 
-  // slightly random tint
   const tints = ["#ff6b90","#ff8fb1","#f7b5c8","#ffd1dc","#f2a7b8"];
   h.style.color = tints[Math.floor(Math.random() * tints.length)];
 
@@ -83,11 +83,9 @@ function spawnHeart(){
   setTimeout(() => h.remove(), duration * 1000);
 }
 
-// start with some hearts already visible
 for(let i=0;i<18;i++){
   setTimeout(spawnHeart, i * 220);
 }
-// continuous
 setInterval(spawnHeart, 520);
 
 // ====== RSVP submit + love burst animation ======
@@ -97,7 +95,8 @@ const toast = $("loveToast");
 const submitBtn = $("submitBtn");
 
 function burstHearts(){
-  // burst from bottom center of RSVP card
+  if (!form) return;
+
   const parent = form;
   const rect = parent.getBoundingClientRect();
 
@@ -106,13 +105,11 @@ function burstHearts(){
     b.className = "burstHeart";
     b.textContent = ["♥","💗","💕","💖"][Math.floor(Math.random()*4)];
 
-    // random burst direction
     const dx = (Math.random() * 260 - 130) + "px";
     const dy = (-40 - Math.random() * 140) + "px";
     b.style.setProperty("--dx", dx);
     b.style.setProperty("--dy", dy);
 
-    // position near bottom-center of the form
     b.style.top = (rect.height - 52) + "px";
 
     parent.appendChild(b);
@@ -120,48 +117,58 @@ function burstHearts(){
   }
 }
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  statusEl.textContent = "";
-  toast.textContent = "";
-  submitBtn.disabled = true;
-  submitBtn.style.opacity = "0.85";
+if (form){
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (statusEl) statusEl.textContent = "";
+    if (toast) toast.textContent = "";
+    if (submitBtn){
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = "0.85";
+    }
 
-  const fd = new FormData(form);
-  const payload = new URLSearchParams(fd);
+    const fd = new FormData(form);
+    const payload = new URLSearchParams(fd);
 
-  try {
-    // IMPORTANT: Apps Script often needs no-cors from static sites
-    await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-      body: payload.toString(),
-    });
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: payload.toString(),
+      });
 
-    // With no-cors we can't read response; assume ok
-    statusEl.textContent = "";
-    toast.textContent = "Submitted! Thank you. ❤️";
-    toast.style.color = "#2b7a4b";
+      if (toast){
+        toast.textContent = "Submitted! Thank you. ❤️";
+        toast.style.color = "#2b7a4b";
+      }
 
-    burstHearts();
-    form.reset();
+      burstHearts();
+      form.reset();
 
-  } catch (err) {
-    statusEl.textContent = "Sorry — submit failed. Please try again.";
-    toast.textContent = "";
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.style.opacity = "1";
-  }
-});
+    } catch (err) {
+      if (statusEl) statusEl.textContent = "Sorry — submit failed. Please try again.";
+      if (toast) toast.textContent = "";
+    } finally {
+      if (submitBtn){
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+      }
+    }
+  });
+}
 
-// ====== CLEAN MAP (Sri Lanka view + pinned venue) ======
+// ====== MAP ======
 function initMap(){
+  if (!window.L) return;
+
+  const mapEl = document.getElementById("map");
+  if (!mapEl) return;
+
   const map = L.map("map", {
     zoomControl: true,
     attributionControl: false
-  }).setView([SL_CENTER.lat, SL_CENTER.lng], 7); // whole Sri Lanka view
+  }).setView([SL_CENTER.lat, SL_CENTER.lng], 7);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18
@@ -172,33 +179,34 @@ function initMap(){
 }
 initMap();
 
-// ====== MUSIC AUTOPLAY (will be blocked until first user interaction sometimes) ======
+// ====== MUSIC ======
 const music = document.getElementById("bgMusic");
 const musicBtn = document.getElementById("musicBtn");
 
 async function tryPlay(){
   if (!music) return;
-  music.volume = 0.25; // mild sound
+  music.volume = 0.25;
   try { await music.play(); } catch(e) {}
 }
 
-// try autoplay
 tryPlay();
-
-// first user gesture will allow it
 window.addEventListener("pointerdown", tryPlay, { once: true });
 
-musicBtn.addEventListener("click", async () => {
-  if (music.paused){
-    await tryPlay();
-    musicBtn.textContent = "❚❚ Pause";
-  } else {
-    music.pause();
-    musicBtn.textContent = "♪ Music";
-  }
-});
+if (musicBtn){
+  musicBtn.addEventListener("click", async () => {
+    if (!music) return;
 
-// ====== ENVELOPE INTRO (always show) ======
+    if (music.paused){
+      await tryPlay();
+      musicBtn.textContent = "❚❚ Pause";
+    } else {
+      music.pause();
+      musicBtn.textContent = "♪ Music";
+    }
+  });
+}
+
+// ====== ENVELOPE INTRO ======
 const overlay = document.getElementById("envelopeOverlay");
 const openBtn = document.getElementById("openInviteBtn");
 
