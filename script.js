@@ -5,7 +5,7 @@ const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbz2rTrciXYwU2hW7MM6vfsFE9I_0TkwHthggKe_B0JthXSkylXCBfFwxYe_-NTp5teV6A/exec";
 
 // Event date: June is month 5 (0-based). 4:00 PM start.
-const weddingDate = new Date(2026, 5, 20, 16, 0, 0);
+const weddingDate = new Date(2026, 5, 27, 16, 0, 0);
 
 // Map pin (Waters Edge - Rajagiriya) — you can fine-tune later if needed
 const PIN = { lat: 6.904917, lng: 79.908601 };
@@ -168,7 +168,7 @@ function initMap(){
   }).addTo(map);
 
   const marker = L.marker([PIN.lat, PIN.lng]).addTo(map);
-  marker.bindPopup("<b>Waters Edge</b><br/>Rajagiriya<br/>4:00 PM – 10:00 PM").openPopup();
+  marker.bindPopup("<b>Paradise Inn</b><br/>Bolgoda<br/>4:00 PM – 10:00 PM").openPopup();
 }
 initMap();
 
@@ -197,26 +197,15 @@ musicBtn.addEventListener("click", async () => {
     musicBtn.textContent = "♪ Music";
   }
 });
-// ====== ENVELOPE INTRO ======
+
+// ====== ENVELOPE INTRO (always show) ======
 const overlay = document.getElementById("envelopeOverlay");
 const openBtn = document.getElementById("openInviteBtn");
 
 if (overlay && openBtn) {
-  // Show only once per visitor (so they don't see it every refresh)
-  const seen = sessionStorage.getItem("inviteOpened");
-
-  if (seen) {
-    overlay.classList.add("hide");
-  } else {
-    openBtn.addEventListener("click", () => {
-      overlay.classList.add("open");
-      sessionStorage.setItem("inviteOpened", "1");
-
-      // after animation, hide overlay and allow page interaction
-      setTimeout(() => overlay.classList.add("hide"), 900);
-
-      // also helps autoplay music after user gesture
-      tryPlay();
-    });
-  }
+  openBtn.addEventListener("click", () => {
+    overlay.classList.add("open");
+    setTimeout(() => overlay.classList.add("hide"), 900);
+    tryPlay();
+  });
 }
