@@ -27,7 +27,6 @@ body{
   color: var(--ink);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
-  /* Smooth gradient (no hard “lines”) */
   background:
     radial-gradient(900px 500px at 18% 12%, rgba(255,211,226,.70), transparent 62%),
     radial-gradient(900px 500px at 86% 10%, rgba(252,229,168,.62), transparent 60%),
@@ -84,7 +83,6 @@ body{
   margin: 14px 0 8px;
   text-align:center;
 
-  /* IMPORTANT: apply your font here */
   font-family: "GistaDanes", serif;
   font-weight: 400;
 
@@ -135,7 +133,6 @@ body{
   overflow:hidden;
 }
 
-/* subtle shimmer */
 .countBox::after{
   content:"";
   position:absolute;
@@ -203,7 +200,6 @@ body{
   transform: translateY(-1px);
 }
 
-/* textarea full width */
 .area{
   grid-column: 1 / -1;
   min-height: 120px;
@@ -251,7 +247,6 @@ body{
   font-size: 14px;
 }
 
-/* Love toast at bottom center of RSVP card */
 .loveToast{
   margin-top: 14px;
   text-align:center;
@@ -273,7 +268,7 @@ body{
 
 .mapWrap{
   border-radius: 22px;
-  overflow: hidden;              /* CROPS like your drawing */
+  overflow: hidden;
   border: 1px solid rgba(255,255,255,.65);
   background: rgba(255,255,255,.45);
   box-shadow: 0 18px 40px rgba(0,0,0,.10);
@@ -285,7 +280,6 @@ body{
   height: 340px;
 }
 
-/* Make leaflet controls softer */
 .leaflet-control-zoom{
   box-shadow: none !important;
   border: 1px solid rgba(255,255,255,.70) !important;
@@ -341,7 +335,7 @@ body{
   font-weight: 700;
 }
 
-/* Background hearts - MORE + more visible */
+/* Background hearts */
 .bgHearts{
   position: fixed;
   inset: 0;
@@ -397,13 +391,13 @@ body{
   100%{ transform: translateX(calc(-50% + var(--dx))) translateY(var(--dy)) scale(1.25); opacity: 0; }
 }
 
-/* Make dropdowns look like the same glass inputs */
+/* Dropdowns */
 select.field{
   -webkit-appearance: none;
   appearance: none;
 
   width: 100%;
-  padding: 16px 46px 16px 18px; /* space for arrow */
+  padding: 16px 46px 16px 18px;
   border-radius: 999px;
 
   background: rgba(255,255,255,.22);
@@ -414,17 +408,12 @@ select.field{
   box-shadow: 0 16px 45px rgba(0,0,0,.10);
   color: rgba(40,26,34,.85);
   font-size: 15px;
-
   outline: none;
 }
-
-/* focus effect */
 select.field:focus{
   border-color: rgba(215,178,92,.70);
   box-shadow: 0 18px 55px rgba(0,0,0,.14);
 }
-
-/* dropdown arrow */
 select.field{
   background-image:
     linear-gradient(45deg, transparent 50%, rgba(40,26,34,.65) 50%),
@@ -435,8 +424,6 @@ select.field{
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
 }
-
-/* placeholder option color */
 select.field option[disabled]{
   color: rgba(40,26,34,.45);
 }
@@ -497,28 +484,37 @@ select.field option[disabled]{
   transition: transform .8s ease;
 }
 
-.envLetter{
-  position:absolute;
-  left: 18px; right: 18px;
-  bottom: 18px;
-  height: 70%;
-  background: #fff;
-  border-radius: 10px;
-  transform: translateY(22%);
-  transition: transform .8s ease, opacity .4s ease;
-  display:grid;
-  place-items:center;
+/* NEW: round seal button text */
+.envSeal{
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  width: 86px;
+  height: 86px;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  font-weight: 900;
+  letter-spacing: .06em;
+  color: rgba(42,31,34,.85);
+
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255,255,255,.75), rgba(255,255,255,.18) 55%, rgba(255,255,255,0) 70%),
+    linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.18));
+  border: 1px solid rgba(255,255,255,.65);
+  box-shadow: 0 18px 45px rgba(0,0,0,.14);
+  user-select: none;
 }
 
-.envLetterText{
-  font-weight: 700;
-  color: #b84b6a;
-  letter-spacing: .5px;
+.envSeal .sealHeart{
+  margin: 0 .12em;
 }
 
 /* open animation */
 .envOverlay.open .envFlap{ transform: rotateX(180deg); }
-.envOverlay.open .envLetter{ transform: translateY(-18%); }
 
 /* hide overlay after open */
 .envOverlay.hide{
