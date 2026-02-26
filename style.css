@@ -396,6 +396,7 @@ body{
   15%{ opacity: 1; }
   100%{ transform: translateX(calc(-50% + var(--dx))) translateY(var(--dy)) scale(1.25); opacity: 0; }
 }
+
 /* Make dropdowns look like the same glass inputs */
 select.field{
   -webkit-appearance: none;
@@ -439,6 +440,7 @@ select.field{
 select.field option[disabled]{
   color: rgba(40,26,34,.45);
 }
+
 /* ===== Envelope Intro ===== */
 .envOverlay{
   position: fixed;
@@ -448,6 +450,7 @@ select.field option[disabled]{
   place-items: center;
   background: radial-gradient(ellipse at top, rgba(255,255,255,.92), rgba(255,232,239,.92));
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .envWrap{ text-align:center; padding: 24px; }
