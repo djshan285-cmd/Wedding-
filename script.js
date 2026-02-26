@@ -84,7 +84,7 @@ function spawnHeart(){
 }
 
 // start with some hearts already visible
-for(let i=0;i<18;i++){ 
+for(let i=0;i<18;i++){
   setTimeout(spawnHeart, i * 220);
 }
 // continuous
@@ -101,7 +101,7 @@ function burstHearts(){
   const parent = form;
   const rect = parent.getBoundingClientRect();
 
-  for(let i=0;i<14;i++){ 
+  for(let i=0;i<14;i++){
     const b = document.createElement("div");
     b.className = "burstHeart";
     b.textContent = ["♥","💗","💕","💖"][Math.floor(Math.random()*4)];
