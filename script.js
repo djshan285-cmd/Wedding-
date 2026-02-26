@@ -206,14 +206,15 @@ if (musicBtn){
   });
 }
 
-// ====== ENVELOPE INTRO ======
+// ====== ENVELOPE INTRO (premium sequence) ======
 const overlay = document.getElementById("envelopeOverlay");
 const openBtn = document.getElementById("openInviteBtn");
 
 if (overlay && openBtn) {
   openBtn.addEventListener("click", () => {
     overlay.classList.add("open");
-    setTimeout(() => overlay.classList.add("hide"), 900);
+    overlay.classList.add("showScreen");
+    setTimeout(() => overlay.classList.add("hide"), 1100);
     tryPlay();
   });
 }
