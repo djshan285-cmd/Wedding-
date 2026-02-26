@@ -197,3 +197,26 @@ musicBtn.addEventListener("click", async () => {
     musicBtn.textContent = "♪ Music";
   }
 });
+// ====== ENVELOPE INTRO ======
+const overlay = document.getElementById("envelopeOverlay");
+const openBtn = document.getElementById("openInviteBtn");
+
+if (overlay && openBtn) {
+  // Show only once per visitor (so they don't see it every refresh)
+  const seen = sessionStorage.getItem("inviteOpened");
+
+  if (seen) {
+    overlay.classList.add("hide");
+  } else {
+    openBtn.addEventListener("click", () => {
+      overlay.classList.add("open");
+      sessionStorage.setItem("inviteOpened", "1");
+
+      // after animation, hide overlay and allow page interaction
+      setTimeout(() => overlay.classList.add("hide"), 900);
+
+      // also helps autoplay music after user gesture
+      tryPlay();
+    });
+  }
+}
