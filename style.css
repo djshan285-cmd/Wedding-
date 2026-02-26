@@ -439,3 +439,87 @@ select.field{
 select.field option[disabled]{
   color: rgba(40,26,34,.45);
 }
+/* ===== Envelope Intro ===== */
+.envOverlay{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at top, rgba(255,255,255,.92), rgba(255,232,239,.92));
+  backdrop-filter: blur(6px);
+}
+
+.envWrap{ text-align:center; padding: 24px; }
+.envHint{ margin-top: 14px; font-size: 14px; opacity: .8; }
+
+.envBtn{
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.env{
+  width: 320px;
+  height: 200px;
+  position: relative;
+  transform-origin: center;
+}
+
+.envBack{
+  position:absolute; inset:0;
+  background: #ffd7e2;
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.12);
+}
+
+.envFront{
+  position:absolute; inset:0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+  pointer-events:none;
+}
+
+.envFlap{
+  position:absolute;
+  left:0; right:0;
+  top:0;
+  height: 55%;
+  background: #ffc1d3;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform .8s ease;
+}
+
+.envLetter{
+  position:absolute;
+  left: 18px; right: 18px;
+  bottom: 18px;
+  height: 70%;
+  background: #fff;
+  border-radius: 10px;
+  transform: translateY(22%);
+  transition: transform .8s ease, opacity .4s ease;
+  display:grid;
+  place-items:center;
+}
+
+.envLetterText{
+  font-weight: 700;
+  color: #b84b6a;
+  letter-spacing: .5px;
+}
+
+/* open animation */
+.envOverlay.open .envFlap{ transform: rotateX(180deg); }
+.envOverlay.open .envLetter{ transform: translateY(-18%); }
+
+/* hide overlay after open */
+.envOverlay.hide{
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s ease;
+}
