@@ -440,7 +440,15 @@ select.field option[disabled]{
   -webkit-backdrop-filter: blur(6px);
 }
 
-.envWrap{ text-align:center; padding: 24px; }
+.envWrap{
+  text-align:center;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
 .envHint{ margin-top: 14px; font-size: 14px; opacity: .8; }
 
 .envBtn{
@@ -450,9 +458,10 @@ select.field option[disabled]{
   padding: 0;
 }
 
+/* FULL SCREEN envelope */
 .env{
-  width: min(520px, 92vw);
-  height: 320px;
+  width: min(960px, 96vw);
+  height: min(640px, 78vh);
   position: relative;
   transform-origin: center;
 }
@@ -460,84 +469,99 @@ select.field option[disabled]{
 .envBack{
   position:absolute;
   inset:0;
-  border-radius: 18px;
+  border-radius: 26px;
 
   background:
-    linear-gradient(180deg, #ffe3ec 0%, #ffd3e1 55%, #ffc6d8 100%);
+    linear-gradient(180deg, #ffe7ef 0%, #ffd5e4 55%, #ffc6dc 100%);
   box-shadow:
-    0 30px 70px rgba(0,0,0,.18),
+    0 45px 120px rgba(0,0,0,.22),
     inset 0 1px 0 rgba(255,255,255,.65);
 }
 
 .envFront{
   position:absolute;
   inset:0;
-  border-radius: 18px;
+  border-radius: 26px;
   background:
-    radial-gradient(600px 240px at 30% 20%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%),
-    linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,0));
+    radial-gradient(900px 380px at 30% 20%, rgba(255,255,255,.52), rgba(255,255,255,0) 62%),
+    linear-gradient(135deg, rgba(255,255,255,.20), rgba(255,255,255,0));
   pointer-events:none;
 }
 
+/* BIG flap (triangle) */
 .envFlap{
   position:absolute;
   left:0; right:0;
   top:0;
-  height: 62%;
+  height: 64%;
 
   background:
-    linear-gradient(180deg, #ffc6d8 0%, #ffb7cf 100%);
+    linear-gradient(180deg, #ffcde0 0%, #ffbcd6 100%);
 
-  border-top-left-radius: 18px;
-  border-top-right-radius: 18px;
+  border-top-left-radius: 26px;
+  border-top-right-radius: 26px;
 
   clip-path: polygon(0 0, 100% 0, 50% 100%);
 
   transform-origin: top;
   transition: transform .8s ease;
 
-  box-shadow: inset 0 -10px 18px rgba(0,0,0,.06);
+  box-shadow:
+    inset 0 -14px 26px rgba(0,0,0,.07),
+    0 8px 26px rgba(0,0,0,.06);
 }
 
-/* Realistic wax seal button - positioned exactly on flap tip */
+/* PREMIUM wax seal: EXACTLY at triangle tip center */
 .envSeal{
   position: absolute;
   left: 50%;
-  top: 62%;                 /* ✅ same as flap height, so it sits on flap point */
+  top: 64%; /* must match envFlap height for perfect tip alignment */
   transform: translate(-50%, -50%);
-  width: 112px;
-  height: 112px;
+
+  width: clamp(110px, 10vw, 150px);
+  height: clamp(110px, 10vw, 150px);
   border-radius: 999px;
 
   display: grid;
   place-items: center;
 
   font-weight: 900;
+  font-size: clamp(26px, 2.2vw, 34px);
   letter-spacing: .06em;
-  color: rgba(255,255,255,.92);
+  color: rgba(255,255,255,.94);
 
   background:
-    radial-gradient(circle at 28% 24%, rgba(255,255,255,.38), rgba(255,255,255,0) 42%),
-    radial-gradient(circle at 70% 78%, rgba(0,0,0,.18), rgba(0,0,0,0) 48%),
-    linear-gradient(180deg, #d83a57 0%, #b9153a 55%, #8f0f2c 100%);
+    radial-gradient(circle at 28% 22%, rgba(255,255,255,.42), rgba(255,255,255,0) 44%),
+    radial-gradient(circle at 68% 78%, rgba(0,0,0,.22), rgba(0,0,0,0) 50%),
+    linear-gradient(180deg, #e23a5f 0%, #bf163f 52%, #8b0d2b 100%);
 
   border: 1px solid rgba(255,255,255,.22);
 
   box-shadow:
-    0 22px 55px rgba(0,0,0,.22),
-    inset 0 10px 16px rgba(255,255,255,.18),
-    inset 0 -14px 18px rgba(0,0,0,.22);
+    0 30px 85px rgba(0,0,0,.28),
+    inset 0 14px 18px rgba(255,255,255,.18),
+    inset 0 -18px 22px rgba(0,0,0,.26);
 
   user-select: none;
 }
 
+.envSeal::before{
+  content:"";
+  position:absolute;
+  inset: 10%;
+  border-radius: 999px;
+  border: 2px dashed rgba(255,255,255,.22);
+  opacity: .65;
+  pointer-events:none;
+}
+
 .envSeal .sealHeart{
   margin: 0 .12em;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,.28));
 }
 
 .envBtn:active .envSeal{
-  transform: translate(-50%, -50%) scale(.97);
+  transform: translate(-50%, -50%) scale(.975);
 }
 
 /* open animation */
