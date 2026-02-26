@@ -451,23 +451,31 @@ select.field option[disabled]{
 }
 
 .env{
-  width: 320px;
-  height: 200px;
+  width: min(520px, 92vw);
+  height: 320px;
   position: relative;
   transform-origin: center;
 }
 
 .envBack{
-  position:absolute; inset:0;
-  background: #ffd7e2;
-  border-radius: 14px;
-  box-shadow: 0 18px 45px rgba(0,0,0,.12);
+  position:absolute;
+  inset:0;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(180deg, #ffe3ec 0%, #ffd3e1 55%, #ffc6d8 100%);
+  box-shadow:
+    0 30px 70px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.65);
 }
 
 .envFront{
-  position:absolute; inset:0;
-  border-radius: 14px;
-  background: linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+  position:absolute;
+  inset:0;
+  border-radius: 18px;
+  background:
+    radial-gradient(600px 240px at 30% 20%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%),
+    linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,0));
   pointer-events:none;
 }
 
@@ -475,23 +483,30 @@ select.field option[disabled]{
   position:absolute;
   left:0; right:0;
   top:0;
-  height: 55%;
-  background: #ffc1d3;
-  border-top-left-radius: 14px;
-  border-top-right-radius: 14px;
+  height: 62%;
+
+  background:
+    linear-gradient(180deg, #ffc6d8 0%, #ffb7cf 100%);
+
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+
   clip-path: polygon(0 0, 100% 0, 50% 100%);
+
   transform-origin: top;
   transition: transform .8s ease;
+
+  box-shadow: inset 0 -10px 18px rgba(0,0,0,.06);
 }
 
-/* NEW: round seal button text */
+/* Realistic wax seal button - positioned exactly on flap tip */
 .envSeal{
   position: absolute;
   left: 50%;
-  top: 52%;
+  top: 62%;                 /* ✅ same as flap height, so it sits on flap point */
   transform: translate(-50%, -50%);
-  width: 86px;
-  height: 86px;
+  width: 112px;
+  height: 112px;
   border-radius: 999px;
 
   display: grid;
@@ -499,18 +514,30 @@ select.field option[disabled]{
 
   font-weight: 900;
   letter-spacing: .06em;
-  color: rgba(42,31,34,.85);
+  color: rgba(255,255,255,.92);
 
   background:
-    radial-gradient(circle at 35% 30%, rgba(255,255,255,.75), rgba(255,255,255,.18) 55%, rgba(255,255,255,0) 70%),
-    linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.18));
-  border: 1px solid rgba(255,255,255,.65);
-  box-shadow: 0 18px 45px rgba(0,0,0,.14);
+    radial-gradient(circle at 28% 24%, rgba(255,255,255,.38), rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 70% 78%, rgba(0,0,0,.18), rgba(0,0,0,0) 48%),
+    linear-gradient(180deg, #d83a57 0%, #b9153a 55%, #8f0f2c 100%);
+
+  border: 1px solid rgba(255,255,255,.22);
+
+  box-shadow:
+    0 22px 55px rgba(0,0,0,.22),
+    inset 0 10px 16px rgba(255,255,255,.18),
+    inset 0 -14px 18px rgba(0,0,0,.22);
+
   user-select: none;
 }
 
 .envSeal .sealHeart{
   margin: 0 .12em;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
+}
+
+.envBtn:active .envSeal{
+  transform: translate(-50%, -50%) scale(.97);
 }
 
 /* open animation */
